@@ -9,7 +9,9 @@ public class King extends Piece {
 
 
     @Override
-    public int[] possibleMoves(Piece piece, int[] startCoords, int[] destCoords) {
+    public String possibleMoves(Piece piece, String destCoordsString) {
+        int[] startCoords = piece.getField();
+        int[] destCoords = turnFieldIntoIndex(destCoordsString);
         int[] moveTo = null;
         int[][] possibleAttacks = new int[8][2];
         //correct attack
@@ -29,6 +31,6 @@ public class King extends Piece {
                 break;
             } else moveTo = startCoords;
         }
-        return moveTo;
+        return turnIndexIntoField(moveTo);
     }
 }

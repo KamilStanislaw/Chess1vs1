@@ -1,6 +1,6 @@
 package com.kamil.chess1vs1.pieces;
 
-public abstract class Piece implements IPiece {
+public abstract class Piece implements IPiece, TurningCoordinates {
     protected Color color;
     protected int[] field; //zamieniæ na String
     public Piece(Color color) {
