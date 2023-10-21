@@ -3,7 +3,7 @@ package com.kamil.chess1vs1.pieces;
 import java.util.Arrays;
 
 public interface MethodsForLongMovingNoJumpingPieces {
-    int[][][] getTableOfMoves(Piece piece, String startCoord, String destCoord);
+    int[][][] getTableOfMoves(Piece piece, String destCoord);
 
     default int[][] pathFieldsCoordsReturn(int[] destCoords, int[][] possibleAttacks) {
         int[][] pathCoords = new int[0][2];

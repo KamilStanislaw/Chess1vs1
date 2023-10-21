@@ -13,13 +13,6 @@ public class ChessBoard implements TurningCoordinates {
     //wtedy w ka¿dej Funkcji() przekazywaæ Stringa, nie zamieniaæ na int[] oraz
     //zamieniæ fielda w Piece z int[] na String. Klarowny kod.
     //wtedy zamiana Pole->index i Index->Pole do Interfejsu i wywo³anie (zamiany) wewn¹trz potrzebych funkcji w Klasie
-    public Piece[][] getChessBoard() {
-        return chessBoard;
-    }
-
-    public void setChessBoard(Piece[][] chessBoard) {
-        this.chessBoard = chessBoard;
-    }
 
     public void add(Piece figura, String field) {
         int[] indexes = turnFieldIntoIndex(field);
@@ -45,11 +38,11 @@ public class ChessBoard implements TurningCoordinates {
         } else if (piece instanceof King) {
             simpleMove(piece, destCoords);
         } else if (piece instanceof Rook) {
-            moveLongRangePiece(((Rook) piece).getTableOfMoves(piece, turnIndexIntoField(piece.getField()), destCoords), piece, destCoords);
+            moveLongRangePiece(((Rook) piece).getTableOfMoves(piece, destCoords), piece, destCoords);
         } else if (piece instanceof Bishop) {
-            moveLongRangePiece(((Bishop) piece).getTableOfMoves(piece, turnIndexIntoField(piece.getField()), destCoords), piece, destCoords);
+            moveLongRangePiece(((Bishop) piece).getTableOfMoves(piece, destCoords), piece, destCoords);
         } else if (piece instanceof Queen) {
-            moveLongRangePiece(((Queen) piece).getTableOfMoves(piece, turnIndexIntoField(piece.getField()), destCoords), piece, destCoords);
+            moveLongRangePiece(((Queen) piece).getTableOfMoves(piece, destCoords), piece, destCoords);
         }
     }
 
@@ -62,11 +55,11 @@ public class ChessBoard implements TurningCoordinates {
             } else if (attackingPiece instanceof King) {
                 simpleAttack(attackingPiece.possibleMoves(attackingPiece, secondPieceCoords), secondPieceCoords, attackingPiece);
             } else if (attackingPiece instanceof Rook) {
-                moveLongRangePiece(((Rook) attackingPiece).getTableOfMoves(attackingPiece, turnIndexIntoField(attackingPiece.getField()), secondPieceCoords), attackingPiece, secondPieceCoords);
+                moveLongRangePiece(((Rook) attackingPiece).getTableOfMoves(attackingPiece, secondPieceCoords), attackingPiece, secondPieceCoords);
             } else if (attackingPiece instanceof Bishop) {
-                moveLongRangePiece(((Bishop) attackingPiece).getTableOfMoves(attackingPiece, turnIndexIntoField(attackingPiece.getField()), secondPieceCoords), attackingPiece, secondPieceCoords);
+                moveLongRangePiece(((Bishop) attackingPiece).getTableOfMoves(attackingPiece, secondPieceCoords), attackingPiece, secondPieceCoords);
             } else if (attackingPiece instanceof Queen) {
-                moveLongRangePiece(((Queen) attackingPiece).getTableOfMoves(attackingPiece, turnIndexIntoField(attackingPiece.getField()), secondPieceCoords), attackingPiece, secondPieceCoords);
+                moveLongRangePiece(((Queen) attackingPiece).getTableOfMoves(attackingPiece, secondPieceCoords), attackingPiece, secondPieceCoords);
             }
         }
     }
