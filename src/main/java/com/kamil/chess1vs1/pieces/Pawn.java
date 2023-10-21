@@ -1,30 +1,31 @@
 package com.kamil.chess1vs1.pieces;
 
-import java.util.Arrays;
-
 public class Pawn extends Piece {
 
     public Pawn(Color color) {
         super(color);
     }
 
-    public int[] pawnAttackSchema(Piece piece, int[] startCoords, int[] destCoords) {
-        int[] attackLeft;
-        int[] attackRight;
+    public String pawnAttackSchema(Piece piece, String destCoordsString) {
+        int[] startCoords = piece.getField();
+        String attackLeft;
+        String attackRight;
         if (piece.color.equals(Color.WHITE)) {
-            attackLeft = new int[]{startCoords[0]-1, startCoords[1]-1};
-            attackRight = new int[]{startCoords[0]-1, startCoords[1]+1};
+            attackLeft = turnIndexIntoField(new int[]{startCoords[0]-1, startCoords[1]-1});
+            attackRight = turnIndexIntoField(new int[]{startCoords[0]-1, startCoords[1]+1});
         } else {
-            attackLeft = new int[]{startCoords[0]+1, startCoords[1]-1};
-            attackRight = new int[]{startCoords[0]+1, startCoords[1]+1};
+            attackLeft = turnIndexIntoField(new int[]{startCoords[0]+1, startCoords[1]-1});
+            attackRight = turnIndexIntoField(new int[]{startCoords[0]+1, startCoords[1]+1});
         }
-        if (Arrays.equals(destCoords, attackLeft) || Arrays.equals(destCoords, attackRight)) {
-            return destCoords; //porównuj¹c koordynaty w tablicach, nie porównujê wartoœci, tylko ca³e tablice;
-        } else return startCoords;
+        if (destCoordsString.equals(attackLeft) || destCoordsString.equals(attackRight)) {
+            return destCoordsString; //porównuj¹c koordynaty w tablicach, nie porównujê wartoœci, tylko ca³e tablice;
+        } else return turnIndexIntoField(startCoords);
     }
 
     @Override
-    public int[] possibleMoves(Piece piece, int[] startCoords, int[] destCoords) {
+    public String possibleMoves(Piece piece, String destCoordsString) {
+        int[] startCoords = piece.getField();
+        int[] destCoords = turnFieldIntoIndex(destCoordsString);
         int[] moveTo;
         if (piece.color.equals(Color.WHITE)) {
             if (startCoords[0] == 6 && destCoords[0] == startCoords[0] - 2) {
@@ -43,7 +44,7 @@ public class Pawn extends Piece {
                 moveTo = new int[]{startCoords[0] + 1, startCoords[1]};
             }
         }
-        return moveTo;
+        return turnIndexIntoField(moveTo);
     }
 
 

@@ -1,15 +1,8 @@
 package com.kamil.chess1vs1;
 
-import com.kamil.chess1vs1.pieces.Bishop;
-import com.kamil.chess1vs1.pieces.Queen;
-import com.kamil.chess1vs1.pieces.Rook;
-import com.kamil.chess1vs1.pieces.Color;
-import com.kamil.chess1vs1.pieces.Piece;
-import com.kamil.chess1vs1.pieces.King;
-import com.kamil.chess1vs1.pieces.Knight;
-import com.kamil.chess1vs1.pieces.Pawn;
+import com.kamil.chess1vs1.pieces.*;
 
-public class ChessBoard {
+public class ChessBoard implements TurningCoordinates {
 
     public Piece[][] chessBoard = new Piece[8][8];
     //mo¿na napisaæ metodê która tworzy pionki i automatycnzie rozstawia po planszy;
@@ -44,75 +37,59 @@ public class ChessBoard {
         return chessBoard[indexes[0]][indexes[1]];
     }
 
-    public int[] turnFieldIntoIndex(String coords) {
-        String lower = coords.toLowerCase();
-        char[] field = lower.toCharArray();
-        char letter = field[0];
-        int number = Integer.parseInt(String.valueOf(field[1]));
-        int coordOfLetter = letter - 97;
-        int coordOfNumber = 8 - number;
-        return new int[]{coordOfNumber, coordOfLetter};
-    }
-
-    public static String turnIndexIntoField(int[] field) {
-        int numb = (- 8 + field[0]) * -1;
-        char letter = (char) (field[1] + 97);
-        return String.join("", String.valueOf(letter), String.valueOf(numb));
-    }
-
     public void move(Piece piece, String destCoords) {
-        int[] destCoord = turnFieldIntoIndex(destCoords);
         if (piece instanceof Pawn) {
-            simpleMove(piece, destCoord, piece.getField());
+            simpleMove(piece, destCoords);
         } else if (piece instanceof Knight) {
-            simpleMove(piece, destCoord, piece.getField());
+            simpleMove(piece, destCoords);
         } else if (piece instanceof King) {
-            simpleMove(piece, destCoord, piece.getField());
+            simpleMove(piece, destCoords);
         } else if (piece instanceof Rook) {
-            moveLongRangePiece(((Rook) piece).getTableOfMoves(piece, piece.getField(), destCoord), piece, destCoord);
+            moveLongRangePiece(((Rook) piece).getTableOfMoves(piece, turnIndexIntoField(piece.getField()), destCoords), piece, destCoords);
         } else if (piece instanceof Bishop) {
-            moveLongRangePiece(((Bishop) piece).getTableOfMoves(piece, piece.getField(), destCoord), piece, destCoord);
+            moveLongRangePiece(((Bishop) piece).getTableOfMoves(piece, turnIndexIntoField(piece.getField()), destCoords), piece, destCoords);
         } else if (piece instanceof Queen) {
-            moveLongRangePiece(((Queen) piece).getTableOfMoves(piece, piece.getField(), destCoord), piece, destCoord);
+            moveLongRangePiece(((Queen) piece).getTableOfMoves(piece, turnIndexIntoField(piece.getField()), destCoords), piece, destCoords);
         }
     }
 
     public void attack(Piece attackingPiece, Piece defendingPiece, String secondPieceCoords) {
-        int[] oldCoords = attackingPiece.getField();
-        int[] destCoord = turnFieldIntoIndex(secondPieceCoords);
         if (!attackingPiece.getColor().equals(defendingPiece.getColor())) {
             if (attackingPiece instanceof Pawn) {
-                simpleAttack(((Pawn) attackingPiece).pawnAttackSchema(attackingPiece, oldCoords, destCoord), destCoord, oldCoords, attackingPiece);
+                simpleAttack(((Pawn) attackingPiece).pawnAttackSchema(attackingPiece, secondPieceCoords), secondPieceCoords, attackingPiece);
             } else if (attackingPiece instanceof Knight) {
-                simpleAttack(attackingPiece.possibleMoves(attackingPiece, oldCoords, destCoord), destCoord, oldCoords, attackingPiece);
+                simpleAttack(attackingPiece.possibleMoves(attackingPiece, secondPieceCoords), secondPieceCoords, attackingPiece);
             } else if (attackingPiece instanceof King) {
-                simpleAttack(attackingPiece.possibleMoves(attackingPiece, oldCoords, destCoord), destCoord, oldCoords, attackingPiece);
+                simpleAttack(attackingPiece.possibleMoves(attackingPiece, secondPieceCoords), secondPieceCoords, attackingPiece);
             } else if (attackingPiece instanceof Rook) {
-                moveLongRangePiece(((Rook) attackingPiece).getTableOfMoves(attackingPiece, oldCoords, destCoord), attackingPiece, destCoord);
+                moveLongRangePiece(((Rook) attackingPiece).getTableOfMoves(attackingPiece, turnIndexIntoField(attackingPiece.getField()), secondPieceCoords), attackingPiece, secondPieceCoords);
             } else if (attackingPiece instanceof Bishop) {
-                moveLongRangePiece(((Bishop) attackingPiece).getTableOfMoves(attackingPiece, oldCoords, destCoord), attackingPiece, destCoord);
+                moveLongRangePiece(((Bishop) attackingPiece).getTableOfMoves(attackingPiece, turnIndexIntoField(attackingPiece.getField()), secondPieceCoords), attackingPiece, secondPieceCoords);
             } else if (attackingPiece instanceof Queen) {
-                moveLongRangePiece(((Queen) attackingPiece).getTableOfMoves(attackingPiece, oldCoords, destCoord), attackingPiece, destCoord);
+                moveLongRangePiece(((Queen) attackingPiece).getTableOfMoves(attackingPiece, turnIndexIntoField(attackingPiece.getField()), secondPieceCoords), attackingPiece, secondPieceCoords);
             }
         }
     }
 
-    private void simpleMove(Piece piece, int[] destCoord, int[] oldCoords) {
-        if (chessBoard[destCoord[0]][destCoord[1]] == null) {
-            int[] newCoords = piece.possibleMoves(piece, piece.getField(), destCoord);
-            cleanFieldAtCoords(turnIndexIntoField(oldCoords));
-            add(piece, turnIndexIntoField(newCoords));
+    private void simpleMove(Piece piece, String destCoord) {
+        String oldCoords = turnIndexIntoField(piece.getField());
+        int[] destCoordInt = turnFieldIntoIndex(destCoord);
+        if (chessBoard[destCoordInt[0]][destCoordInt[1]] == null) {
+            String newCoords = piece.possibleMoves(piece, destCoord);
+            cleanFieldAtCoords(oldCoords);
+            add(piece, newCoords);
         }
     }
 
-    private void simpleAttack(int[] getMoves, int[] destCoord, int[] oldCoords, Piece attackingPiece) {
-            if (getMoves == destCoord) {
-                cleanFieldAtCoords(turnIndexIntoField(oldCoords));
-                add(attackingPiece, turnIndexIntoField(destCoord));
+    private void simpleAttack(String getMoves, String destCoord, Piece attackingPiece) {
+        String oldCoords = turnIndexIntoField(attackingPiece.getField());
+            if (getMoves.equals(destCoord)) {
+                cleanFieldAtCoords(oldCoords);
+                add(attackingPiece, destCoord);
             }
     }
 
-    private void moveLongRangePiece(int[][][] tableOfMoves, Piece piece, int[] destCoord) {
+    private void moveLongRangePiece(int[][][] tableOfMoves, Piece piece, String destCoord) {
         for (int[][] clearWay : tableOfMoves) {
             if (clearWay != null) {
                 checkRoadAndMove(piece, clearWay, destCoord);
@@ -120,7 +97,7 @@ public class ChessBoard {
         }
     }
 
-    private void checkRoadAndMove(Piece piece, int[][] clearWayDirection, int[] destCoord) {
+    private void checkRoadAndMove(Piece piece, int[][] clearWayDirection, String destCoord) {
         int[] chceckWay;
         int iter = 0;
         for (int i = 0; i < clearWayDirection.length;) {
@@ -133,9 +110,9 @@ public class ChessBoard {
             }
         }
         if (iter == clearWayDirection.length) {
-            simpleMove(piece, destCoord, piece.getField());
+            simpleMove(piece, destCoord);
         } else if (iter == clearWayDirection.length - 1) {
-            simpleAttack(piece.possibleMoves(piece, piece.getField(), destCoord), destCoord, piece.getField(), piece);
+            simpleAttack(piece.possibleMoves(piece, destCoord), destCoord, piece);
         }
     }
 

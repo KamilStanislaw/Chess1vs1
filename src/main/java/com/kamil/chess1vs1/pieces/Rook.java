@@ -4,16 +4,18 @@ public class Rook extends Piece implements MethodsForLongMovingNoJumpingPieces {
     public Rook(Color color) {
         super(color);
     }
-    public int[][][] getTableOfMoves(Piece piece, int[] oldCoords, int[] destCoord) {
+    public int[][][] getTableOfMoves(Piece piece, String startCoords, String destCoord) {
         int[][][] tableOfWays = new int[4][][];
-        tableOfWays[0] = ((Rook) piece).checkWayToSouth(piece, oldCoords, destCoord);
-        tableOfWays[1] = ((Rook) piece).checkWayToNorth(piece, oldCoords, destCoord);
-        tableOfWays[2] = ((Rook) piece).checkWayToWest(piece, oldCoords, destCoord);
-        tableOfWays[3] = ((Rook) piece).checkWayToEast(piece, oldCoords, destCoord);
+        tableOfWays[0] = ((Rook) piece).checkWayToSouth(piece, startCoords, destCoord);
+        tableOfWays[1] = ((Rook) piece).checkWayToNorth(piece, startCoords, destCoord);
+        tableOfWays[2] = ((Rook) piece).checkWayToWest(piece, startCoords, destCoord);
+        tableOfWays[3] = ((Rook) piece).checkWayToEast(piece, startCoords, destCoord);
         return tableOfWays;
     }
 
-    int[][] checkWayToSouth(Piece piece, int[] startCoords, int[] destCoords) {
+    int[][] checkWayToSouth(Piece piece, String startCoordsString, String destCoordsString) {
+        int[] startCoords = turnFieldIntoIndex(startCoordsString);
+        int[] destCoords = turnFieldIntoIndex(destCoordsString);
         int[][] possibleAttacks = new int[7][2];
         if (piece.color.equals(Color.BLACK) || piece.getColor().equals(Color.WHITE)) {
             possibleAttacks[0] = new int[]{startCoords[0]+1, startCoords[1]};
@@ -27,7 +29,9 @@ public class Rook extends Piece implements MethodsForLongMovingNoJumpingPieces {
         return pathFieldsCoordsReturn(destCoords, possibleAttacks);
     }
 
-    int[][] checkWayToNorth(Piece piece, int[] startCoords, int[] destCoords) {
+    int[][] checkWayToNorth(Piece piece, String startCoordsString, String destCoordsString) {
+        int[] startCoords = turnFieldIntoIndex(startCoordsString);
+        int[] destCoords = turnFieldIntoIndex(destCoordsString);
         int[][] possibleAttacks = new int[7][2];
         if (piece.color.equals(Color.BLACK) || piece.getColor().equals(Color.WHITE)) {
             possibleAttacks[0] = new int[]{startCoords[0]-1, startCoords[1]};
@@ -41,7 +45,9 @@ public class Rook extends Piece implements MethodsForLongMovingNoJumpingPieces {
         return pathFieldsCoordsReturn(destCoords, possibleAttacks);
     }
 
-    int[][] checkWayToWest(Piece piece, int[] startCoords, int[] destCoords) {
+    int[][] checkWayToWest(Piece piece, String startCoordsString, String destCoordsString) {
+        int[] startCoords = turnFieldIntoIndex(startCoordsString);
+        int[] destCoords = turnFieldIntoIndex(destCoordsString);
         int[][] possibleAttacks = new int[7][2];
         if (piece.color.equals(Color.BLACK) || piece.getColor().equals(Color.WHITE)) {
             possibleAttacks[0] = new int[]{startCoords[0], startCoords[1]-1};
@@ -55,7 +61,9 @@ public class Rook extends Piece implements MethodsForLongMovingNoJumpingPieces {
         return pathFieldsCoordsReturn(destCoords, possibleAttacks);
     }
 
-    int[][] checkWayToEast(Piece piece, int[] startCoords, int[] destCoords) {
+    int[][] checkWayToEast(Piece piece, String startCoordsString, String destCoordsString) {
+        int[] startCoords = turnFieldIntoIndex(startCoordsString);
+        int[] destCoords = turnFieldIntoIndex(destCoordsString);
         int[][] possibleAttacks = new int[7][2];
         if (piece.color.equals(Color.BLACK) || piece.getColor().equals(Color.WHITE)) {
             possibleAttacks[0] = new int[]{startCoords[0], startCoords[1]+1};
@@ -71,17 +79,19 @@ public class Rook extends Piece implements MethodsForLongMovingNoJumpingPieces {
 
 
     @Override
-    public int[] possibleMoves(Piece piece, int[] startCoords, int[] destCoords) {
+    public String possibleMoves(Piece piece, String destCoordsString) {
+        int[] destCoords = turnFieldIntoIndex(destCoordsString);
+        int[] startCoords = piece.getField();
         int[] moveTo = null;
-        int[][] possibleAttacksSouth = checkWayToSouth(piece, startCoords, destCoords);
-        int[][] possibleAttacksNorth = checkWayToNorth(piece, startCoords, destCoords);
-        int[][] possibleAttacksWest = checkWayToWest(piece, startCoords, destCoords);
-        int[][] possibleAttacksEast = checkWayToEast(piece, startCoords, destCoords);
-        moveTo = setDestFieldIfNotEmpty(startCoords, destCoords, possibleAttacksSouth, moveTo);
-        moveTo = setDestFieldIfNotEmpty(startCoords, destCoords, possibleAttacksNorth, moveTo);
-        moveTo = setDestFieldIfNotEmpty(startCoords, destCoords, possibleAttacksWest, moveTo);
-        moveTo = setDestFieldIfNotEmpty(startCoords, destCoords, possibleAttacksEast, moveTo);
+        int[][] possibleAttacksSouth = checkWayToSouth(piece, turnIndexIntoField(piece.getField()), destCoordsString);
+        int[][] possibleAttacksNorth = checkWayToNorth(piece, turnIndexIntoField(piece.getField()), destCoordsString);
+        int[][] possibleAttacksWest = checkWayToWest(piece, turnIndexIntoField(piece.getField()), destCoordsString);
+        int[][] possibleAttacksEast = checkWayToEast(piece, turnIndexIntoField(piece.getField()), destCoordsString);
+        moveTo = setDestFieldIfExist(startCoords, destCoords, possibleAttacksSouth, moveTo);
+        moveTo = setDestFieldIfExist(startCoords, destCoords, possibleAttacksNorth, moveTo);
+        moveTo = setDestFieldIfExist(startCoords, destCoords, possibleAttacksWest, moveTo);
+        moveTo = setDestFieldIfExist(startCoords, destCoords, possibleAttacksEast, moveTo);
 
-        return moveTo;
+        return turnIndexIntoField(moveTo);
     }
 }
