@@ -1,4 +1,4 @@
-package com.kamil.chess1vs1.pieces;
+package kamil.chess1vs1.pieces;
 
 public interface TurningCoordinates {
     default int[] turnFieldIntoIndex(String coords) {

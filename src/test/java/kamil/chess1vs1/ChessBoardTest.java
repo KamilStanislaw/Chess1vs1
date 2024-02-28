@@ -1,12 +1,7 @@
-package com.kamil.chess1vs1;
+package kamil.chess1vs1;
 
-import com.kamil.chess1vs1.pieces.Bishop;
-import com.kamil.chess1vs1.pieces.Queen;
-import com.kamil.chess1vs1.pieces.Rook;
-import com.kamil.chess1vs1.pieces.Color;
-import com.kamil.chess1vs1.pieces.King;
-import com.kamil.chess1vs1.pieces.Knight;
-import com.kamil.chess1vs1.pieces.Pawn;
+import kamil.chess1vs1.logic.ChessBoard;
+import kamil.chess1vs1.pieces.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

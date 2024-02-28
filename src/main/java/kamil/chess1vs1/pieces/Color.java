@@ -1,4 +1,4 @@
-package com.kamil.chess1vs1.pieces;
+package kamil.chess1vs1.pieces;
 
 public enum Color {
     WHITE("white"), BLACK("black");

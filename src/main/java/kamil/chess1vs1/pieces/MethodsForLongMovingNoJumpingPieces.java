@@ -1,4 +1,4 @@
-package com.kamil.chess1vs1.pieces;
+package kamil.chess1vs1.pieces;
 
 import java.util.Arrays;
 

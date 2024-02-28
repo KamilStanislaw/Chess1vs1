@@ -1,4 +1,4 @@
-package com.kamil.chess1vs1.pieces;
+package kamil.chess1vs1.pieces;
 
 public class Rook extends Piece implements MethodsForLongMovingNoJumpingPieces {
     public Rook(Color color) {

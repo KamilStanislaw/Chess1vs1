@@ -1,18 +1,17 @@
-package com.kamil.chess1vs1;
+package kamil.chess1vs1.logic;
 
-import com.kamil.chess1vs1.pieces.*;
+import kamil.chess1vs1.pieces.*;
 
 public class ChessBoard implements TurningCoordinates {
 
     public Piece[][] chessBoard = new Piece[8][8];
-    //mo¿na napisaæ metodê która tworzy pionki i automatycnzie rozstawia po planszy;
 
     //po wprowadzeniu Grafiki:
-    //po klikniêciu figur / pól bêdzie sprawdzanie nulla i wtedy decyzja jak¹ funkcjê uruchomiæ;
+    //po klikniÄ™ciu figura -> pole bÄ™dzie sprawdzanie nulla i wtedy decyzja jakÄ… funkcjÄ™ uruchomiÄ‡;
     //zczytywanie z pola lub figury DestCoords jako String np H4
-    //wtedy w ka¿dej Funkcji() przekazywaæ Stringa, nie zamieniaæ na int[] oraz
-    //zamieniæ fielda w Piece z int[] na String. Klarowny kod.
-    //wtedy zamiana Pole->index i Index->Pole do Interfejsu i wywo³anie (zamiany) wewn¹trz potrzebych funkcji w Klasie
+    //wtedy w kaÅ¼dej Funkcji() przekazywaÄ‡ Stringa, nie zamieniaÄ‡ na int[] oraz
+    //zamieniÄ‡ fielda w Piece z int[] na String. Klarowny kod.
+    //wtedy zamiana Pole->index i Index->Pole do Interfejsu i wywoÅ‚anie (zamiany) wewnÄ…trz potrzebych funkcji w Klasie
 
     public void add(Piece figura, String field) {
         int[] indexes = turnFieldIntoIndex(field);

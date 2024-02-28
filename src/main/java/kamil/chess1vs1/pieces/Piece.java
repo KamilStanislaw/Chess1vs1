@@ -1,4 +1,4 @@
-package com.kamil.chess1vs1.pieces;
+package kamil.chess1vs1.pieces;
 
 public abstract class Piece implements IPiece, TurningCoordinates {
     protected Color color;

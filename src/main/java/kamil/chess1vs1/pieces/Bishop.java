@@ -1,4 +1,4 @@
-package com.kamil.chess1vs1.pieces;
+package kamil.chess1vs1.pieces;
 
 public class Bishop extends Piece implements MethodsForLongMovingNoJumpingPieces {
     public Bishop(Color color) {
