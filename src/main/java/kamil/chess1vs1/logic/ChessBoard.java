@@ -3,7 +3,6 @@ package kamil.chess1vs1.logic;
 import kamil.chess1vs1.pieces.*;
 
 public class ChessBoard implements TurningCoordinates {
-    //final version?
     public Piece[][] chessBoard = new Piece[8][8];
     public void compareInputWithPieceAndMove(String pieceNameInput, String inputCoords, String turn) {
         for (Piece[] pieces : chessBoard) {
