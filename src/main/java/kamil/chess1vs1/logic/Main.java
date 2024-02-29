@@ -19,7 +19,7 @@ public class Main {
                 switch (choice) {
                     case 1 -> {
                         System.out.println();
-                        System.out.println("Welcome in new game!");
+                        System.out.println("New Game is starting...");
                         scanner.nextLine();
                         gameManager.run();
                     }

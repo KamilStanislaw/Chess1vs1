@@ -3,10 +3,7 @@ package kamil.chess1vs1.logic;
 import kamil.chess1vs1.pieces.*;
 
 public class ChessBoard implements TurningCoordinates {
-
     public Piece[][] chessBoard = new Piece[8][8];
-
-
     public void compareInputWithPieceAndMove(String pieceNameInput, String inputCoords, String turn) {
         for (Piece[] pieces : chessBoard) {
             for (Piece piece : pieces) {
@@ -23,13 +20,6 @@ public class ChessBoard implements TurningCoordinates {
             }
         }
     }
-
-    //po wprowadzeniu Grafiki:
-    //po kliknięciu figura -> pole będzie sprawdzanie nulla i wtedy decyzja jaką funkcję uruchomić;
-    //zczytywanie z pola lub figury DestCoords jako String np H4
-    //wtedy w każdej Funkcji() przekazywać Stringa, nie zamieniać na int[] oraz
-    //zamienić fielda w Piece z int[] na String. Klarowny kod.
-    //wtedy zamiana Pole->index i Index->Pole do Interfejsu i wywołanie (zamiany) wewnątrz potrzebych funkcji w Klasie
 
     public void add(Piece figura, String field) {
         int[] indexes = turnFieldIntoIndex(field);
@@ -65,18 +55,21 @@ public class ChessBoard implements TurningCoordinates {
 
     public void attack(Piece attackingPiece, Piece defendingPiece, String secondPieceCoords) {
         if (!attackingPiece.getColor().equals(defendingPiece.getColor())) {
-            if (attackingPiece instanceof Pawn) {
-                simpleAttack(((Pawn) attackingPiece).pawnAttackSchema(attackingPiece, secondPieceCoords), secondPieceCoords, attackingPiece);
-            } else if (attackingPiece instanceof Knight) {
-                simpleAttack(attackingPiece.possibleMoves(attackingPiece, secondPieceCoords), secondPieceCoords, attackingPiece);
-            } else if (attackingPiece instanceof King) {
-                simpleAttack(attackingPiece.possibleMoves(attackingPiece, secondPieceCoords), secondPieceCoords, attackingPiece);
-            } else if (attackingPiece instanceof Rook) {
-                moveLongRangePiece(((Rook) attackingPiece).getTableOfMoves(attackingPiece, secondPieceCoords), attackingPiece, secondPieceCoords);
-            } else if (attackingPiece instanceof Bishop) {
-                moveLongRangePiece(((Bishop) attackingPiece).getTableOfMoves(attackingPiece, secondPieceCoords), attackingPiece, secondPieceCoords);
-            } else if (attackingPiece instanceof Queen) {
-                moveLongRangePiece(((Queen) attackingPiece).getTableOfMoves(attackingPiece, secondPieceCoords), attackingPiece, secondPieceCoords);
+            switch (attackingPiece) {
+                case Pawn pawn ->
+                        simpleAttack(pawn.pawnAttackSchema(attackingPiece, secondPieceCoords), secondPieceCoords, attackingPiece);
+                case Knight ignored1 ->
+                        simpleAttack(attackingPiece.possibleMoves(attackingPiece, secondPieceCoords), secondPieceCoords, attackingPiece);
+                case King ignored ->
+                        simpleAttack(attackingPiece.possibleMoves(attackingPiece, secondPieceCoords), secondPieceCoords, attackingPiece);
+                case Rook rook ->
+                        moveLongRangePiece(rook.getTableOfMoves(attackingPiece, secondPieceCoords), attackingPiece, secondPieceCoords);
+                case Bishop bishop ->
+                        moveLongRangePiece(bishop.getTableOfMoves(attackingPiece, secondPieceCoords), attackingPiece, secondPieceCoords);
+                case Queen queen ->
+                        moveLongRangePiece(queen.getTableOfMoves(attackingPiece, secondPieceCoords), attackingPiece, secondPieceCoords);
+                default -> {
+                }
             }
         }
     }

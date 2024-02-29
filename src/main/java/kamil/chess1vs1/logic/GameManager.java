@@ -4,8 +4,8 @@ import kamil.chess1vs1.pieces.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GameManager {
@@ -30,7 +30,6 @@ public class GameManager {
             } else {
                 System.out.println("Turn: b");
             }
-
             Scanner scanner = new Scanner(System.in);
             String coords = scanner.nextLine().toLowerCase();
             if (coords.equals("skip")) {
@@ -51,10 +50,10 @@ public class GameManager {
             printChessBoard(chessBoard.chessBoard);
 
             List<Color> colorsOfPiecesInBoard = Arrays.stream(chessBoard.chessBoard)
-                    .flatMap(p -> Stream.of(p))
-                    .filter(p -> p != null)
-                    .map(p -> p.getColor())
-                    .collect(Collectors.toList());
+                    .flatMap(Stream::of)
+                    .filter(Objects::nonNull)
+                    .map(Piece::getColor)
+                    .toList();
             if (!colorsOfPiecesInBoard.contains(Color.BLACK)) {
                 System.out.println("WHITE player WINS!");
                 break;
