@@ -38,7 +38,7 @@ public class GameManager {
             } else if (coords.equals("exit")) {
                 break;
             } else if (coords.equals("save")) {
-
+                //add save to file
             } else if (coords.contains(",")) {
                 String[] input = coords.split(",\\s*");
                 String pieceNameInput = input[0];
