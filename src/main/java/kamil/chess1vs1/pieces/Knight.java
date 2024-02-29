@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public class Knight extends Piece {
 
-    public Knight(Color color) {
-        super(color);
+    public Knight(Color color, String name) {
+        super(color, name);
     }
 
     @Override

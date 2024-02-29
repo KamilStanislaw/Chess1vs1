@@ -6,6 +6,24 @@ public class ChessBoard implements TurningCoordinates {
 
     public Piece[][] chessBoard = new Piece[8][8];
 
+
+    public void compareInputWithPieceAndMove(String pieceNameInput, String inputCoords, String turn) {
+        for (Piece[] pieces : chessBoard) {
+            for (Piece piece : pieces) {
+                if (piece !=null) {
+                    if (pieceNameInput.equals(piece.getName().toLowerCase()) & piece.getName().startsWith(turn)) {
+                        if (getPieceAtCoords(inputCoords) != null) {
+                            Piece attackedPiece = getPieceAtCoords(inputCoords);
+                            attack(piece, attackedPiece, inputCoords);
+                        } else if (getPieceAtCoords(inputCoords) == null){
+                            move(piece, inputCoords);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     //po wprowadzeniu Grafiki:
     //po kliknięciu figura -> pole będzie sprawdzanie nulla i wtedy decyzja jaką funkcję uruchomić;
     //zczytywanie z pola lub figury DestCoords jako String np H4

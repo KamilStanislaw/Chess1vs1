@@ -1,9 +1,10 @@
 package kamil.chess1vs1.pieces;
 
 public class Rook extends Piece implements MethodsForLongMovingNoJumpingPieces {
-    public Rook(Color color) {
-        super(color);
+    public Rook(Color color, String name) {
+        super(color, name);
     }
+
     public int[][][] getTableOfMoves(Piece piece, String destCoord) {
         Rook cast = (Rook) piece;
         int[][][] tableOfWays = new int[4][][];

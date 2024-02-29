@@ -2,13 +2,19 @@ package kamil.chess1vs1.pieces;
 
 public abstract class Piece implements IPiece, TurningCoordinates {
     protected Color color;
-    protected int[] field; //zamieniæ na String
-    public Piece(Color color) {
+    protected String name;
+    protected int[] field;
+    public Piece(Color color, String name) {
         this.color = color;
+        this.name = name;
     }
 
     public Color getColor() {
         return color;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int[] getField() {

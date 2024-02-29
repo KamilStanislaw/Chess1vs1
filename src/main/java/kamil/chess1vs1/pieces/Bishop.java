@@ -1,9 +1,10 @@
 package kamil.chess1vs1.pieces;
 
 public class Bishop extends Piece implements MethodsForLongMovingNoJumpingPieces {
-    public Bishop(Color color) {
-        super(color);
+    public Bishop(Color color, String name) {
+        super(color, name);
     }
+
     public int[][][] getTableOfMoves(Piece piece, String destCoord) {
         int[][][] tableOfWays = new int[4][][];
         tableOfWays[0] = ((Bishop) piece).checkWayToSouthEast(piece, destCoord);

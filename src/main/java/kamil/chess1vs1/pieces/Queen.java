@@ -2,10 +2,10 @@ package kamil.chess1vs1.pieces;
 
 public class Queen extends Piece implements MethodsForLongMovingNoJumpingPieces {
 
-    private Bishop bishopMoves = new Bishop(Color.WHITE);
-    private Rook rookMoves = new Rook(Color.WHITE);
-    public Queen(Color color) {
-        super(color);
+    private Bishop bishopMoves = new Bishop(Color.WHITE, "b");
+    private Rook rookMoves = new Rook(Color.WHITE, "r");
+    public Queen(Color color, String name) {
+        super(color, name);
     }
 
     @Override

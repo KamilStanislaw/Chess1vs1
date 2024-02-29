@@ -2,8 +2,8 @@ package kamil.chess1vs1.pieces;
 
 public class Pawn extends Piece {
 
-    public Pawn(Color color) {
-        super(color);
+    public Pawn(Color color, String name) {
+        super(color, name);
     }
 
     public String pawnAttackSchema(Piece piece, String destCoordsString) {
@@ -18,7 +18,7 @@ public class Pawn extends Piece {
             attackRight = turnIndexIntoField(new int[]{startCoords[0]+1, startCoords[1]+1});
         }
         if (destCoordsString.equals(attackLeft) || destCoordsString.equals(attackRight)) {
-            return destCoordsString; //porównuj¹c koordynaty w tablicach, nie porównujê wartoœci, tylko ca³e tablice;
+            return destCoordsString; //porï¿½wnujï¿½c koordynaty w tablicach, nie porï¿½wnujï¿½ wartoï¿½ci, tylko caï¿½e tablice;
         } else return turnIndexIntoField(startCoords);
     }
 

@@ -7,18 +7,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChessBoardTest {
-
-    //rozdzieliæ testy na poszczególne figury
-
     private ChessBoard board = new ChessBoard();
-
-    //mo¿na napisaæ metodê która tworzy pionki i automatycnzie rozstawia po planszy
-
     @Test
     public void canAddPawnAndKnight() {
-        Pawn pawn = new Pawn(Color.WHITE);
+        Pawn pawn = new Pawn(Color.WHITE, "white");
         board.add(pawn, "f6");
-        Knight knight = new Knight(Color.BLACK);
+        Knight knight = new Knight(Color.BLACK, "black");
         board.add(knight, "c1");
         assertEquals(pawn, board.getPieceAtCoords("f6"));
         assertEquals(knight, board.getPieceAtCoords("c1"));
@@ -26,9 +20,9 @@ class ChessBoardTest {
     @Test
     public void checkFields() {
         ChessBoard nowa = new ChessBoard();
-        Pawn pawn = new Pawn(Color.WHITE);
+        Pawn pawn = new Pawn(Color.WHITE, "white");
         nowa.add(pawn, "f6");
-        Knight knight = new Knight(Color.BLACK);
+        Knight knight = new Knight(Color.BLACK, "black");
         nowa.add(knight, "c1");
         nowa.move(knight,"d3");
         assertArrayEquals(nowa.turnFieldIntoIndex("f6"), pawn.getField());
@@ -38,7 +32,7 @@ class ChessBoardTest {
     }
     @Test
     public void canClearAField() {
-        Pawn pawn = new Pawn(Color.BLACK);
+        Pawn pawn = new Pawn(Color.BLACK, "black");
         board.add(pawn, "a7");
         Pawn removeBlackPawn = (Pawn) board.cleanFieldAtCoords("a7");
         Pawn removeWhitePawn = (Pawn) board.cleanFieldAtCoords("f6");
@@ -49,7 +43,7 @@ class ChessBoardTest {
     }
     @Test
     public void canMoveWhitePawnForward() {
-        Pawn pawn = new Pawn(Color.WHITE);
+        Pawn pawn = new Pawn(Color.WHITE, "white");
         board.add(pawn, "d2");
         board.move(pawn, "d3");
         Pawn findPawn = (Pawn) board.getPieceAtCoords("d3");
@@ -59,7 +53,7 @@ class ChessBoardTest {
     }
     @Test
     public void canMoveBlackPawnForward() {
-        Pawn pawn = new Pawn(Color.BLACK);
+        Pawn pawn = new Pawn(Color.BLACK, "black");
         board.add(pawn, "f7");
         board.move(pawn, "f6");
         Pawn findPawn = (Pawn) board.getPieceAtCoords("f6");
@@ -67,7 +61,7 @@ class ChessBoardTest {
     }
     @Test
     public void canBeginMoveWhitePawnForwardPlus2() {
-        Pawn pawn = new Pawn(Color.WHITE);
+        Pawn pawn = new Pawn(Color.WHITE, "white");
         board.add(pawn, "d2");
         board.move(pawn, "d4");
         Pawn findPawn = (Pawn) board.getPieceAtCoords("d4");
@@ -75,7 +69,7 @@ class ChessBoardTest {
     }
     @Test
     public void canBeginMoveBlackPawnForwardPlus2() {
-        Pawn pawn = new Pawn(Color.BLACK);
+        Pawn pawn = new Pawn(Color.BLACK, "black");
         board.add(pawn, "f7");
         board.move(pawn, "f5");
         Pawn findPawn = (Pawn) board.getPieceAtCoords("f5");
@@ -83,8 +77,8 @@ class ChessBoardTest {
     }
     @Test
     public void cantMoveBlackPawnForwardIfPlus1NotEmpty() {
-        Pawn pawnWhite = new Pawn(Color.WHITE);
-        Pawn pawnBlack = new Pawn(Color.BLACK);
+        Pawn pawnWhite = new Pawn(Color.WHITE, "white");
+        Pawn pawnBlack = new Pawn(Color.BLACK, "black");
         board.add(pawnWhite, "f7");
         board.add(pawnBlack, "f6");
         board.move(pawnWhite, "f6");
@@ -95,9 +89,9 @@ class ChessBoardTest {
     }
     @Test
     public void canAttackOtherPiece() {
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "c6");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board.add(blackPawn, "d7");
         board.attack(whitePawn, blackPawn, "d7");
         Pawn pawn = (Pawn) board.getPieceAtCoords("c6");
@@ -105,9 +99,9 @@ class ChessBoardTest {
     }
     @Test
     public void whenAttackOtherPieceIfColorIsCorrect() {
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "c6");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board.add(blackPawn, "d7");
         board.attack(whitePawn, blackPawn, "d7");
         Pawn pawn = (Pawn) board.getPieceAtCoords("d7");
@@ -116,8 +110,8 @@ class ChessBoardTest {
     @Test
     public void cantAttackSamePieceColor() {
         ChessBoard board = new ChessBoard();
-        Pawn whitePawn = new Pawn(Color.WHITE);
-        Knight otherWhite = new Knight(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
+        Knight otherWhite = new Knight(Color.WHITE, "white");
         board.add(whitePawn, "c6");
         board.add(otherWhite, "d7");
         board.attack(whitePawn, otherWhite, "d7");
@@ -128,22 +122,22 @@ class ChessBoardTest {
     }
     @Test
     public void coloVSColor() {
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "c6");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board.add(blackPawn, "d7");
-        Pawn whitePawn2 = new Pawn(Color.WHITE);
+        Pawn whitePawn2 = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "a1");
-        Pawn blackPawn2 = new Pawn(Color.BLACK);
+        Pawn blackPawn2 = new Pawn(Color.BLACK, "black");
         board.add(blackPawn, "b1");
         assertNotEquals(whitePawn, blackPawn);
         assertNotEquals(whitePawn2, blackPawn2);
     }
     @Test
     public void whenAttackIsSecondReplaced() {
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "c6");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board.add(blackPawn, "d7");
         board.attack(whitePawn, blackPawn, "d7");
         Pawn pawn = (Pawn) board.getPieceAtCoords("d7");
@@ -154,7 +148,7 @@ class ChessBoardTest {
     @Test
     public void knightCorrectMoveAndClean() {
         ChessBoard board = new ChessBoard();
-        Knight whiteKnight = new Knight(Color.WHITE);
+        Knight whiteKnight = new Knight(Color.WHITE, "white");
         board.add(whiteKnight, "f3");
         board.move(whiteKnight, "e5");
         Knight knightMoved = (Knight) board.getPieceAtCoords("e5");
@@ -165,7 +159,7 @@ class ChessBoardTest {
     @Test
     public void knightCorrectMoveNorthRightAndClean() {
         ChessBoard board = new ChessBoard();
-        Knight whiteKnight = new Knight(Color.WHITE);
+        Knight whiteKnight = new Knight(Color.WHITE, "white");
         board.add(whiteKnight, "f3");
         board.move(whiteKnight, "g5");
         Knight knightMoved = (Knight) board.getPieceAtCoords("g5");
@@ -176,7 +170,7 @@ class ChessBoardTest {
     @Test
     public void knightCorrectMove2() {
         ChessBoard board2 = new ChessBoard();
-        Knight whiteKnight = new Knight(Color.WHITE);
+        Knight whiteKnight = new Knight(Color.WHITE, "white");
         board2.add(whiteKnight, "f3");
         board2.move(whiteKnight, "d2");
         Knight knightMoved = (Knight) board2.getPieceAtCoords("d2");
@@ -187,7 +181,7 @@ class ChessBoardTest {
     @Test
     public void knightCorrectMove3() {
         ChessBoard board2 = new ChessBoard();
-        Knight whiteKnight = new Knight(Color.WHITE);
+        Knight whiteKnight = new Knight(Color.WHITE, "white");
         board2.add(whiteKnight, "d5");
         board2.move(whiteKnight, "c7");
         Knight knightMoved = (Knight) board2.getPieceAtCoords("c7");
@@ -198,7 +192,7 @@ class ChessBoardTest {
     @Test
     public void knightBlackCorrectMove3() {
         ChessBoard board2 = new ChessBoard();
-        Knight blackKnight = new Knight(Color.BLACK);
+        Knight blackKnight = new Knight(Color.BLACK, "black");
         board2.add(blackKnight, "b8");
         board2.move(blackKnight, "a6");
         Knight knightMoved = (Knight) board2.getPieceAtCoords("a6");
@@ -209,9 +203,9 @@ class ChessBoardTest {
     @Test
     public void canKnightAttackOtherPieceAndLeftField() {
         ChessBoard board2 = new ChessBoard();
-        Knight whiteKnight = new Knight(Color.WHITE);
+        Knight whiteKnight = new Knight(Color.WHITE, "white");
         board2.add(whiteKnight, "g1");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board2.add(blackPawn, "f3");
         board2.attack(whiteKnight, blackPawn, "f3");
         Knight knight = (Knight) board2.getPieceAtCoords("g1");
@@ -222,8 +216,8 @@ class ChessBoardTest {
     @Test
     public void cantKnightAttackSameColor() {
         ChessBoard board2 = new ChessBoard();
-        Knight whiteKnight = new Knight(Color.WHITE);
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Knight whiteKnight = new Knight(Color.WHITE, "white");
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board2.add(whiteKnight, "g1");
         board2.add(whitePawn, "f3");
         board2.attack(whiteKnight, whitePawn, "f3");
@@ -235,7 +229,7 @@ class ChessBoardTest {
     @Test
     public void kingCorrectMove() {
         ChessBoard board2 = new ChessBoard();
-        King blackKing = new King(Color.WHITE);
+        King blackKing = new King(Color.WHITE, "white");
         board2.add(blackKing, "f5");
         board2.move(blackKing, "f6");
         King kingMoved = (King) board2.getPieceAtCoords("f6");
@@ -246,7 +240,7 @@ class ChessBoardTest {
     @Test
     public void kingCorrectMove2() {
         ChessBoard board2 = new ChessBoard();
-        King blackKing = new King(Color.WHITE);
+        King blackKing = new King(Color.WHITE, "white");
         board2.add(blackKing, "f5");
         board2.move(blackKing, "e4");
         King kingMoved = (King) board2.getPieceAtCoords("e4");
@@ -257,7 +251,7 @@ class ChessBoardTest {
     @Test
     public void kingCorrectMove3() {
         ChessBoard board2 = new ChessBoard();
-        King blackKing = new King(Color.WHITE);
+        King blackKing = new King(Color.WHITE, "white");
         board2.add(blackKing, "f5");
         board2.move(blackKing, "f4");
         King kingMoved = (King) board2.getPieceAtCoords("f4");
@@ -268,7 +262,7 @@ class ChessBoardTest {
     @Test
     public void kingCorrectMove4() {
         ChessBoard board2 = new ChessBoard();
-        King blackKing = new King(Color.WHITE);
+        King blackKing = new King(Color.WHITE, "white");
         board2.add(blackKing, "f5");
         board2.move(blackKing, "g4");
         King kingMoved = (King) board2.getPieceAtCoords("g4");
@@ -279,9 +273,9 @@ class ChessBoardTest {
     @Test
     public void canKingAttackOtherPieceAndLeftField() {
         ChessBoard board2 = new ChessBoard();
-        King whiteKing = new King(Color.WHITE);
+        King whiteKing = new King(Color.WHITE, "white");
         board2.add(whiteKing, "f5");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board2.add(blackPawn, "f4");
         board2.attack(whiteKing, blackPawn, "f4");
         King king = (King) board2.getPieceAtCoords("f5");
@@ -292,8 +286,8 @@ class ChessBoardTest {
     @Test
     public void cantKingAttackSameColor() {
         ChessBoard board2 = new ChessBoard();
-        King whiteKing = new King(Color.WHITE);
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        King whiteKing = new King(Color.WHITE, "white");
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board2.add(whiteKing, "f5");
         board2.add(whitePawn, "f4");
         board2.attack(whiteKing, whitePawn, "f4");
@@ -305,7 +299,7 @@ class ChessBoardTest {
     @Test
     public void kingIncorrectMoveDontMove() {
         ChessBoard board2 = new ChessBoard();
-        King blackKing = new King(Color.WHITE);
+        King blackKing = new King(Color.WHITE, "white");
         board2.add(blackKing, "f5");
         board2.move(blackKing, "a8");
         King kingNotMoved = (King) board2.getPieceAtCoords("a8");
@@ -316,9 +310,9 @@ class ChessBoardTest {
     @Test
     public void cantKingAttackIfWrongCoords() {
         ChessBoard board2 = new ChessBoard();
-        King whiteKing = new King(Color.WHITE);
+        King whiteKing = new King(Color.WHITE, "white");
         board2.add(whiteKing, "f5");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board2.add(blackPawn, "h8");
         board2.attack(whiteKing, blackPawn, "h8");
         King king = (King) board2.getPieceAtCoords("f5");
@@ -329,7 +323,7 @@ class ChessBoardTest {
     @Test
     public void rooktCorrectMoveAndClean() {
         ChessBoard board = new ChessBoard();
-        Rook whiteRook = new Rook(Color.WHITE);
+        Rook whiteRook = new Rook(Color.WHITE, "white");
         board.add(whiteRook, "d5");
         board.move(whiteRook, "h5");
         Rook rookMoved = (Rook) board.getPieceAtCoords("h5");
@@ -340,7 +334,7 @@ class ChessBoardTest {
     @Test
     public void rooktCorrectMoveAndClean2() {
         ChessBoard board = new ChessBoard();
-        Rook whiteRook = new Rook(Color.WHITE);
+        Rook whiteRook = new Rook(Color.WHITE, "white");
         board.add(whiteRook, "d5");
         board.move(whiteRook, "d1");
         Rook rookMoved = (Rook) board.getPieceAtCoords("d1");
@@ -351,7 +345,7 @@ class ChessBoardTest {
     @Test
     public void rooktCorrectMoveAndClean3() {
         ChessBoard board = new ChessBoard();
-        Rook whiteRook = new Rook(Color.WHITE);
+        Rook whiteRook = new Rook(Color.WHITE, "white");
         board.add(whiteRook, "a1");
         board.move(whiteRook, "a8");
         Rook rookMoved = (Rook) board.getPieceAtCoords("a8");
@@ -362,7 +356,7 @@ class ChessBoardTest {
     @Test
     public void rooktCorrectMoveAndClean4() {
         ChessBoard board = new ChessBoard();
-        Rook whiteRook = new Rook(Color.WHITE);
+        Rook whiteRook = new Rook(Color.WHITE, "white");
         board.add(whiteRook, "a1");
         board.move(whiteRook, "h1");
         Rook rookMoved = (Rook) board.getPieceAtCoords("h1");
@@ -373,9 +367,9 @@ class ChessBoardTest {
     @Test
     public void rooktCorrectMoveAndClean5() {
         ChessBoard board = new ChessBoard();
-        Rook whiteRook = new Rook(Color.WHITE);
+        Rook whiteRook = new Rook(Color.WHITE, "white");
         board.add(whiteRook, "a1");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board.add(blackPawn, "g2");
         board.move(whiteRook, "h1");
         Rook rookMoved = (Rook) board.getPieceAtCoords("h1");
@@ -386,9 +380,9 @@ class ChessBoardTest {
     @Test
     public void rooktCorrectMoveAndClean6() {
         ChessBoard board = new ChessBoard();
-        Rook whiteRook = new Rook(Color.WHITE);
+        Rook whiteRook = new Rook(Color.WHITE, "white");
         board.add(whiteRook, "a1");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board.add(blackPawn, "h1");
         board.move(whiteRook, "e1");
         Rook rookMoved = (Rook) board.getPieceAtCoords("e1");
@@ -399,9 +393,9 @@ class ChessBoardTest {
     @Test
     public void rooktCorrectMoveAndClean7() {
         ChessBoard board = new ChessBoard();
-        Rook whiteRook = new Rook(Color.WHITE);
+        Rook whiteRook = new Rook(Color.WHITE, "white");
         board.add(whiteRook, "f5");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board.add(blackPawn, "f8");
         board.move(whiteRook, "f1");
         Rook rookMoved = (Rook) board.getPieceAtCoords("f1");
@@ -412,7 +406,7 @@ class ChessBoardTest {
     @Test
     public void rookIncorrectMoveCanceled() {
         ChessBoard board = new ChessBoard();
-        Rook blackRook = new Rook(Color.BLACK);
+        Rook blackRook = new Rook(Color.BLACK, "black");
         board.add(blackRook, "g3");
         board.move(blackRook, "e4");
         Rook rookNotAllowed = (Rook) board.getPieceAtCoords("e4");
@@ -423,7 +417,7 @@ class ChessBoardTest {
     @Test
     public void rookIncorrectMoveCanceled2() {
         ChessBoard board = new ChessBoard();
-        Rook blackRook = new Rook(Color.BLACK);
+        Rook blackRook = new Rook(Color.BLACK, "black");
         board.add(blackRook, "h8");
         board.move(blackRook, "b1");
         Rook rookNotAllowed = (Rook) board.getPieceAtCoords("b1");
@@ -434,9 +428,9 @@ class ChessBoardTest {
     @Test
     public void rookWayIsNotFree() {
         ChessBoard board = new ChessBoard();
-        Rook blackRook = new Rook(Color.BLACK);
+        Rook blackRook = new Rook(Color.BLACK, "black");
         board.add(blackRook, "d5");
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "f5");
         board.move(blackRook, "h5");
         Rook rookNotAllowed = (Rook) board.getPieceAtCoords("h5");
@@ -449,9 +443,9 @@ class ChessBoardTest {
     @Test
     public void rookWayIsNotFree2() {
         ChessBoard board = new ChessBoard();
-        Rook blackRook = new Rook(Color.BLACK);
+        Rook blackRook = new Rook(Color.BLACK, "black");
         board.add(blackRook, "d8");
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "d6");
         board.move(blackRook, "d2");
         Rook rookNotAllowed = (Rook) board.getPieceAtCoords("d2");
@@ -464,9 +458,9 @@ class ChessBoardTest {
     @Test
     public void rookAttackAndCleared() {
         ChessBoard board = new ChessBoard();
-        Rook blackRook = new Rook(Color.BLACK);
+        Rook blackRook = new Rook(Color.BLACK, "black");
         board.add(blackRook, "d5");
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "g5");
         board.attack(blackRook, whitePawn, "g5");
         Rook movedRook = (Rook) board.getPieceAtCoords("g5");
@@ -477,9 +471,9 @@ class ChessBoardTest {
     @Test
     public void rookAttackAndCleared2() {
         ChessBoard board = new ChessBoard();
-        Rook blackRook = new Rook(Color.BLACK);
+        Rook blackRook = new Rook(Color.BLACK, "black");
         board.add(blackRook, "d7");
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "d3");
         board.attack(blackRook, whitePawn, "d3");
         Rook movedRook = (Rook) board.getPieceAtCoords("d3");
@@ -490,9 +484,9 @@ class ChessBoardTest {
     @Test
     public void rookCantAttackSameColor() {
         ChessBoard board = new ChessBoard();
-        Rook blackRook = new Rook(Color.BLACK);
+        Rook blackRook = new Rook(Color.BLACK, "black");
         board.add(blackRook, "d7");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board.add(blackPawn, "d3");
         board.attack(blackRook, blackPawn, "d3");
         Rook stayedRook = (Rook) board.getPieceAtCoords("d7");
@@ -503,9 +497,9 @@ class ChessBoardTest {
     @Test
     public void rookCantAttackSameColor2() {
         ChessBoard board = new ChessBoard();
-        Rook blackRook = new Rook(Color.BLACK);
+        Rook blackRook = new Rook(Color.BLACK, "black");
         board.add(blackRook, "a5");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board.add(blackPawn, "f5");
         board.attack(blackRook, blackPawn, "f5");
         Rook stayedRook = (Rook) board.getPieceAtCoords("a5");
@@ -516,11 +510,11 @@ class ChessBoardTest {
     @Test
     public void rookCantJumpToAttack() {
         ChessBoard board = new ChessBoard();
-        Rook blackRook = new Rook(Color.BLACK);
+        Rook blackRook = new Rook(Color.BLACK, "black");
         board.add(blackRook, "a5");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
         board.add(blackPawn, "f5");
-        Knight whiteKnight = new Knight(Color.WHITE);
+        Knight whiteKnight = new Knight(Color.WHITE, "white");
         board.add(whiteKnight, "h5");
         board.attack(blackRook, whiteKnight, "h5");
         Rook stayedRook = (Rook) board.getPieceAtCoords("a5");
@@ -533,7 +527,7 @@ class ChessBoardTest {
     @Test
     public void bishopCanMoveAndClean() {
         ChessBoard board = new ChessBoard();
-        Bishop whiteBishop = new Bishop(Color.WHITE);
+        Bishop whiteBishop = new Bishop(Color.WHITE, "white");
         board.add(whiteBishop, "d4");
         board.move(whiteBishop, "h8");
         Bishop moved = (Bishop) board.getPieceAtCoords("h8");
@@ -544,7 +538,7 @@ class ChessBoardTest {
     @Test
     public void bishopCanMoveAndClean2() {
         ChessBoard board = new ChessBoard();
-        Bishop whiteBishop = new Bishop(Color.WHITE);
+        Bishop whiteBishop = new Bishop(Color.WHITE, "white");
         board.add(whiteBishop, "g7");
         board.move(whiteBishop, "a1");
         Bishop moved = (Bishop) board.getPieceAtCoords("a1");
@@ -555,7 +549,7 @@ class ChessBoardTest {
     @Test
     public void bishopCanMoveAndClean3() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
         board.add(blackBishop, "b7");
         board.move(blackBishop, "f3");
         Bishop moved = (Bishop) board.getPieceAtCoords("f3");
@@ -566,7 +560,7 @@ class ChessBoardTest {
     @Test
     public void bishopCanMoveAndClean4() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
         board.add(blackBishop, "f5");
         board.move(blackBishop, "e6");
         Bishop moved = (Bishop) board.getPieceAtCoords("e6");
@@ -577,9 +571,9 @@ class ChessBoardTest {
     @Test
     public void bishopCantMove() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
         board.add(blackBishop, "f5");
-        Pawn whitePawn2 = new Pawn(Color.WHITE);
+        Pawn whitePawn2 = new Pawn(Color.WHITE, "white");
         board.add(whitePawn2, "d7");
         board.move(blackBishop, "c8");
         Bishop canceled = (Bishop) board.getPieceAtCoords("c8");
@@ -592,9 +586,9 @@ class ChessBoardTest {
     @Test
     public void bishopCantMove2() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
         board.add(blackBishop, "d1");
-        Pawn whitePawn2 = new Pawn(Color.WHITE);
+        Pawn whitePawn2 = new Pawn(Color.WHITE, "white");
         board.add(whitePawn2, "f3");
         board.move(blackBishop, "h5");
         Bishop canceled = (Bishop) board.getPieceAtCoords("h5");
@@ -607,7 +601,7 @@ class ChessBoardTest {
     @Test
     public void bishopInvalidMove() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
         board.add(blackBishop, "d1");
         board.move(blackBishop, "d5");
         Bishop canceled = (Bishop) board.getPieceAtCoords("d5");
@@ -618,7 +612,7 @@ class ChessBoardTest {
     @Test
     public void bishopInvalidMove2() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
         board.add(blackBishop, "d4");
         board.move(blackBishop, "a5");
         Bishop canceled = (Bishop) board.getPieceAtCoords("a5");
@@ -629,9 +623,9 @@ class ChessBoardTest {
     @Test
     public void bishopCorrectAttack() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
         board.add(blackBishop, "f5");
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "c8");
         board.move(blackBishop, "c8");
         Bishop moved = (Bishop) board.getPieceAtCoords("c8");
@@ -642,9 +636,9 @@ class ChessBoardTest {
     @Test
     public void bishopCorrectAttack2() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
         board.add(blackBishop, "h8");
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "c3");
         board.move(blackBishop, "c3");
         Bishop moved = (Bishop) board.getPieceAtCoords("c3");
@@ -655,9 +649,9 @@ class ChessBoardTest {
     @Test
     public void bishopCorrectAttack3() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
         board.add(blackBishop, "d4");
-        Pawn whitePawn = new Pawn(Color.WHITE);
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
         board.add(whitePawn, "a7");
         board.move(blackBishop, "a7");
         Bishop moved = (Bishop) board.getPieceAtCoords("a7");
@@ -668,9 +662,9 @@ class ChessBoardTest {
     @Test
     public void bishopCantAttack() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
-        Pawn whitePawn = new Pawn(Color.WHITE);
-        King king = new King(Color.WHITE);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
+        King king = new King(Color.WHITE, "white");
         board.add(blackBishop, "f5");
         board.add(whitePawn, "c8");
         board.add(king, "e6");
@@ -685,9 +679,9 @@ class ChessBoardTest {
     @Test
     public void bishopCantAttack2() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
-        Pawn whitePawn = new Pawn(Color.WHITE);
-        King king = new King(Color.WHITE);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
+        King king = new King(Color.WHITE, "white");
         board.add(blackBishop, "a1");
         board.add(whitePawn, "h8");
         board.add(king, "d4");
@@ -702,9 +696,9 @@ class ChessBoardTest {
     @Test
     public void bishopInvalidAttack() {
         ChessBoard board = new ChessBoard();
-        Bishop blackBishop = new Bishop(Color.BLACK);
-        Pawn whitePawn = new Pawn(Color.WHITE);
-        King king = new King(Color.WHITE);
+        Bishop blackBishop = new Bishop(Color.BLACK, "black");
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
+        King king = new King(Color.WHITE, "white");
         board.add(blackBishop, "a1");
         board.add(whitePawn, "c7");
         board.add(king, "d4");
@@ -719,7 +713,7 @@ class ChessBoardTest {
     @Test
     public void addQueen() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
         Queen notNullQueen = (Queen) board.getPieceAtCoords("d4");
         assertEquals(blackQueen, notNullQueen);
@@ -727,7 +721,7 @@ class ChessBoardTest {
     @Test
     public void movedQueenAnClean() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
         board.move(blackQueen, "d8");
         Queen movedQueen = (Queen) board.getPieceAtCoords("d8");
@@ -738,7 +732,7 @@ class ChessBoardTest {
     @Test
     public void movedQueenAnClean2() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
         board.move(blackQueen, "d1");
         Queen movedQueen = (Queen) board.getPieceAtCoords("d1");
@@ -749,7 +743,7 @@ class ChessBoardTest {
     @Test
     public void movedQueenAnClean3() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
         board.move(blackQueen, "a4");
         Queen movedQueen = (Queen) board.getPieceAtCoords("a4");
@@ -760,7 +754,7 @@ class ChessBoardTest {
     @Test
     public void movedQueenAnClean4() {
         ChessBoard board = new ChessBoard();
-        Queen whiteQueen = new Queen(Color.WHITE);
+        Queen whiteQueen = new Queen(Color.WHITE, "white");
         board.add(whiteQueen, "d4");
         board.move(whiteQueen, "g4");
         Queen movedQueen = (Queen) board.getPieceAtCoords("g4");
@@ -771,7 +765,7 @@ class ChessBoardTest {
     @Test
     public void movedQueenAnClean5() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
         board.move(blackQueen, "a1");
         Queen movedQueen = (Queen) board.getPieceAtCoords("a1");
@@ -782,7 +776,7 @@ class ChessBoardTest {
     @Test
     public void movedQueenAnClean6() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
         board.move(blackQueen, "g7");
         Queen movedQueen = (Queen) board.getPieceAtCoords("g7");
@@ -793,7 +787,7 @@ class ChessBoardTest {
     @Test
     public void movedQueenAnClean7() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
         board.move(blackQueen, "a7");
         Queen movedQueen = (Queen) board.getPieceAtCoords("a7");
@@ -804,7 +798,7 @@ class ChessBoardTest {
     @Test
     public void movedQueenAnClean8() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
         board.move(blackQueen, "g1");
         Queen movedQueen = (Queen) board.getPieceAtCoords("g1");
@@ -815,7 +809,7 @@ class ChessBoardTest {
     @Test
     public void movedQueenIncorrectMove() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
         board.move(blackQueen, "h5");
         Queen stayedQueen = (Queen) board.getPieceAtCoords("d4");
@@ -826,9 +820,9 @@ class ChessBoardTest {
     @Test
     public void queenBlockedMove() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
-        Pawn pawn = new Pawn(Color.BLACK);
+        Pawn pawn = new Pawn(Color.BLACK, "black");
         board.add(pawn, "f6");
         board.move(blackQueen, "h8");
         Queen stayedQueen = (Queen) board.getPieceAtCoords("d4");
@@ -842,9 +836,9 @@ class ChessBoardTest {
     @Test
     public void queenCorrectAttack() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
-        Pawn pawn = new Pawn(Color.WHITE);
+        Pawn pawn = new Pawn(Color.WHITE, "white");
         board.add(pawn, "f6");
         board.attack(blackQueen, pawn, "f6");
         Queen movedQueen = (Queen) board.getPieceAtCoords("f6");
@@ -855,9 +849,9 @@ class ChessBoardTest {
     @Test
     public void queenCorrectAttack2() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
-        Pawn pawn = new Pawn(Color.WHITE);
+        Pawn pawn = new Pawn(Color.WHITE, "white");
         board.add(pawn, "a4");
         board.attack(blackQueen, pawn, "a4");
         Queen movedQueen = (Queen) board.getPieceAtCoords("a4");
@@ -868,9 +862,9 @@ class ChessBoardTest {
     @Test
     public void queenCantAttackSameColor() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
-        Pawn pawn = new Pawn(Color.BLACK);
+        Pawn pawn = new Pawn(Color.BLACK, "black");
         board.add(pawn, "a4");
         board.attack(blackQueen, pawn, "a4");
         Pawn stayedPawn = (Pawn) board.getPieceAtCoords("a4");
@@ -881,9 +875,9 @@ class ChessBoardTest {
     @Test
     public void queenCantAttackSameColor2() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
-        Pawn pawn = new Pawn(Color.BLACK);
+        Pawn pawn = new Pawn(Color.BLACK, "black");
         board.add(pawn, "e3");
         board.attack(blackQueen, pawn, "e3");
         Pawn stayedPawn = (Pawn) board.getPieceAtCoords("e3");
@@ -894,11 +888,11 @@ class ChessBoardTest {
     @Test
     public void queenBlockedAttack() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
-        Pawn pawn = new Pawn(Color.WHITE);
+        Pawn pawn = new Pawn(Color.WHITE, "white");
         board.add(pawn, "h8");
-        King king = new King(Color.WHITE);
+        King king = new King(Color.WHITE, "white");
         board.add(king, "f6");
         board.attack(blackQueen, pawn, "h8");
         Queen stayedQueen = (Queen) board.getPieceAtCoords("d4");
@@ -911,11 +905,11 @@ class ChessBoardTest {
     @Test
     public void queenBlockedAttack2() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
-        Pawn pawn = new Pawn(Color.WHITE);
+        Pawn pawn = new Pawn(Color.WHITE, "white");
         board.add(pawn, "d7");
-        King king = new King(Color.WHITE);
+        King king = new King(Color.WHITE, "white");
         board.add(king, "d6");
         board.attack(blackQueen, pawn, "d7");
         Queen stayedQueen = (Queen) board.getPieceAtCoords("d4");
@@ -928,9 +922,9 @@ class ChessBoardTest {
     @Test
     public void queenIncorrectFieldAttack() {
         ChessBoard board = new ChessBoard();
-        Queen blackQueen = new Queen(Color.BLACK);
+        Queen blackQueen = new Queen(Color.BLACK, "black");
         board.add(blackQueen, "d4");
-        Pawn pawn = new Pawn(Color.WHITE);
+        Pawn pawn = new Pawn(Color.WHITE, "white");
         board.add(pawn, "f2");
         board.attack(blackQueen, pawn, "h6");
         Queen stayedQueen = (Queen) board.getPieceAtCoords("d4");
@@ -941,9 +935,9 @@ class ChessBoardTest {
     @Test
     public void castlingWhiteRight() {
         ChessBoard board = new ChessBoard();
-        King king = new King(Color.WHITE);
+        King king = new King(Color.WHITE, "white");
         board.add(king, "e1");
-        Rook rook = new Rook(Color.WHITE);
+        Rook rook = new Rook(Color.WHITE, "white");
         board.add(rook, "h1");
         board.castling(king, rook);
         King kingMoved = (King) board.getPieceAtCoords("g1");
@@ -958,9 +952,9 @@ class ChessBoardTest {
     @Test
     public void castlingWhiteLeft() {
         ChessBoard board = new ChessBoard();
-        King king = new King(Color.WHITE);
+        King king = new King(Color.WHITE, "white");
         board.add(king, "e1");
-        Rook rook = new Rook(Color.WHITE);
+        Rook rook = new Rook(Color.WHITE, "white");
         board.add(rook, "a1");
         board.castling(king, rook);
         King kingMoved = (King) board.getPieceAtCoords("c1");
@@ -975,9 +969,9 @@ class ChessBoardTest {
     @Test
     public void castlingBlackRight() {
         ChessBoard board = new ChessBoard();
-        King king = new King(Color.BLACK);
+        King king = new King(Color.BLACK, "black");
         board.add(king, "e8");
-        Rook rook = new Rook(Color.BLACK);
+        Rook rook = new Rook(Color.BLACK, "black");
         board.add(rook, "h8");
         board.castling(king, rook);
         King kingMoved = (King) board.getPieceAtCoords("g8");
@@ -992,9 +986,9 @@ class ChessBoardTest {
     @Test
     public void castlingBlackLeft() {
         ChessBoard board = new ChessBoard();
-        King king = new King(Color.BLACK);
+        King king = new King(Color.BLACK, "black");
         board.add(king, "e8");
-        Rook rook = new Rook(Color.BLACK);
+        Rook rook = new Rook(Color.BLACK, "black");
         board.add(rook, "a8");
         board.castling(king, rook);
         King kingMoved = (King) board.getPieceAtCoords("c8");
@@ -1009,11 +1003,11 @@ class ChessBoardTest {
     @Test
     public void castlingWhiteRightBlocked() {
         ChessBoard board = new ChessBoard();
-        King king = new King(Color.WHITE);
+        King king = new King(Color.WHITE, "white");
         board.add(king, "e1");
-        Rook rook = new Rook(Color.WHITE);
+        Rook rook = new Rook(Color.WHITE, "white");
         board.add(rook, "h1");
-        Knight knight = new Knight(Color.WHITE);
+        Knight knight = new Knight(Color.WHITE, "white");
         board.add(knight, "g1");
         board.castling(king, rook);
         King kingStayed = (King) board.getPieceAtCoords("e1");
@@ -1026,11 +1020,11 @@ class ChessBoardTest {
     @Test
     public void castlingWhiteLeftBlocked() {
         ChessBoard board = new ChessBoard();
-        King king = new King(Color.WHITE);
+        King king = new King(Color.WHITE, "white");
         board.add(king, "e1");
-        Rook rook = new Rook(Color.WHITE);
+        Rook rook = new Rook(Color.WHITE, "white");
         board.add(rook, "a1");
-        Knight knight = new Knight(Color.WHITE);
+        Knight knight = new Knight(Color.WHITE, "white");
         board.add(knight, "b1");
         board.castling(king, rook);
         King kingStayed = (King) board.getPieceAtCoords("e1");
@@ -1043,11 +1037,11 @@ class ChessBoardTest {
     @Test
     public void castlingBlackRightBlocked() {
         ChessBoard board = new ChessBoard();
-        King king = new King(Color.BLACK);
+        King king = new King(Color.BLACK, "black");
         board.add(king, "e8");
-        Rook rook = new Rook(Color.BLACK);
+        Rook rook = new Rook(Color.BLACK, "black");
         board.add(rook, "h8");
-        Knight knight = new Knight(Color.BLACK);
+        Knight knight = new Knight(Color.BLACK, "black");
         board.add(knight, "g8");
         board.castling(king, rook);
         King kingStayed = (King) board.getPieceAtCoords("e8");
@@ -1060,11 +1054,11 @@ class ChessBoardTest {
     @Test
     public void castlingBlackLeftBlocked() {
         ChessBoard board = new ChessBoard();
-        King king = new King(Color.BLACK);
+        King king = new King(Color.BLACK, "black");
         board.add(king, "e8");
-        Rook rook = new Rook(Color.BLACK);
+        Rook rook = new Rook(Color.BLACK, "black");
         board.add(rook, "a8");
-        Knight knight = new Knight(Color.BLACK);
+        Knight knight = new Knight(Color.BLACK, "black");
         board.add(knight, "b8");
         board.castling(king, rook);
         King kingStayed = (King) board.getPieceAtCoords("e8");
@@ -1077,9 +1071,9 @@ class ChessBoardTest {
     @Test
     public void castlingBlackLeftWrongColor() {
         ChessBoard board = new ChessBoard();
-        King king = new King(Color.BLACK);
+        King king = new King(Color.BLACK, "black");
         board.add(king, "e8");
-        Rook rook = new Rook(Color.WHITE);
+        Rook rook = new Rook(Color.WHITE, "white");
         board.add(rook, "a8");
         board.castling(king, rook);
         King kingStayed = (King) board.getPieceAtCoords("e8");

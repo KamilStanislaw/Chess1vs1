@@ -11,7 +11,7 @@ public class GameLogicTest {
         GameManager gameManager = new GameManager();
         gameManager.run();
         Piece c8 = gameManager.getChessBoard().getPieceAtCoords("c8");
-        Bishop blackBishop = new Bishop(Color.BLACK);
+        Bishop blackBishop = new Bishop(Color.BLACK, "bB");
         assertThat(blackBishop.getColor()).isEqualTo(c8.getColor());
         assertThat(c8.getField()).isEqualTo(gameManager.getChessBoard().turnFieldIntoIndex("c8"));
         assertThat(c8 instanceof Bishop);
@@ -22,7 +22,7 @@ public class GameLogicTest {
         GameManager gameManager = new GameManager();
         gameManager.run();
         Piece f7 = gameManager.getChessBoard().getPieceAtCoords("f7");
-        Pawn blackPawn = new Pawn(Color.BLACK);
+        Pawn blackPawn = new Pawn(Color.BLACK, "bP");
         assertThat(blackPawn.getColor()).isEqualTo(f7.getColor());
         assertThat(f7.getField()).isEqualTo(gameManager.getChessBoard().turnFieldIntoIndex("f7"));
         assertThat(f7 instanceof Pawn);
@@ -33,7 +33,7 @@ public class GameLogicTest {
         GameManager gameManager = new GameManager();
         gameManager.run();
         Piece a1 = gameManager.getChessBoard().getPieceAtCoords("a1");
-        Rook whiteRook = new Rook(Color.WHITE);
+        Rook whiteRook = new Rook(Color.WHITE, "wR");
         assertThat(whiteRook.getColor()).isEqualTo(a1.getColor());
         assertThat(a1.getField()).isEqualTo(gameManager.getChessBoard().turnFieldIntoIndex("a1"));
         assertThat(a1 instanceof Rook);

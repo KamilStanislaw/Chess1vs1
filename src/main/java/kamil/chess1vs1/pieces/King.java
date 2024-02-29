@@ -3,10 +3,9 @@ package kamil.chess1vs1.pieces;
 import java.util.Arrays;
 
 public class King extends Piece {
-    public King(Color color) {
-        super(color);
+    public King(Color color, String name) {
+        super(color, name);
     }
-
 
     @Override
     public String possibleMoves(Piece piece, String destCoordsString) {
