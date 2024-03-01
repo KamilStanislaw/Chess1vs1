@@ -2,7 +2,6 @@ package kamil.chess1vs1.logic;
 
 import kamil.chess1vs1.pieces.*;
 
-import javax.sound.midi.Soundbank;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Stream;
@@ -25,8 +24,8 @@ public class GameManager {
             loadGameFromFile(saveName);
         }
 
-        System.out.println("White pieces starts.");
-        System.out.println("Insert Piece Symbol and coordinates with ',' ('bk, e7' or 'wp1, a4' \n(black King, white Pawn 1)) to move or attack.");
+        System.out.println("White pieces starts.\n");
+        System.out.println("Insert Piece Symbol and coordinates with ',' ('bk, e7' or 'wp1, a4' \n(black King, white Pawn 1)) to move or attack.\n");
         System.out.println("Insert 'skip' after your turn.");
         System.out.println("Insert 'save' to save your game.");
         System.out.println("Insert 'exit' to end game.");
