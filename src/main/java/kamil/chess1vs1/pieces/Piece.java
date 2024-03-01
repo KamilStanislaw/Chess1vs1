@@ -1,6 +1,8 @@
 package kamil.chess1vs1.pieces;
 
-public abstract class Piece implements IPiece, TurningCoordinates {
+import java.io.Serializable;
+
+public abstract class Piece implements IPiece, TurningCoordinates, Serializable {
     protected Color color;
     protected String name;
     protected int[] field;

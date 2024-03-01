@@ -2,17 +2,28 @@ package kamil.chess1vs1.logic;
 
 import kamil.chess1vs1.pieces.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import javax.sound.midi.Soundbank;
+import java.io.*;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class GameManager {
+    private static final String SAVE_PATH = "src/main/resources/saved/";
+    private static final String SAVED_GAMES_PATHS = "src/main/resources/saved/savedGamesList.txt";
+    ChessBoard chessBoard = new ChessBoard();
+    Set<String> savedGamesPaths;
 
-    public void run() {
-        ChessBoard chessBoard = new ChessBoard();
-        addAllPieces(chessBoard);
+    public GameManager(Set<String> savedGamesPaths) {
+        this.savedGamesPaths = savedGamesPaths;
+    }
+
+    void run(int choice, String saveName) {
+        if (choice == 1) {
+            chessBoard.chessBoard = new Piece[8][8];
+            addAllPieces(chessBoard);
+        } else if (choice == 2) {
+            loadGameFromFile(saveName);
+        }
 
         System.out.println("White pieces starts.");
         System.out.println("Insert Piece Symbol and coordinates with ',' ('bk, e7' or 'wp1, a4' \n(black King, white Pawn 1)) to move or attack.");
@@ -38,13 +49,18 @@ public class GameManager {
             } else if (coords.equals("exit")) {
                 break;
             } else if (coords.equals("save")) {
-                //save to file
+                System.out.println("Give name to your save game file: ");
+                String inputName = scanner.nextLine();
+                saveGame(inputName);
+                break;
             } else if (coords.contains(",")) {
                 String[] input = coords.split(",\\s*");
                 String pieceNameInput = input[0];
-                chessBoard.compareInputWithPieceAndMove(pieceNameInput, input[1], turn);
+                if (input[1].matches("[a-hA-h][12345678]")){
+                    chessBoard.compareInputWithPieceAndMove(pieceNameInput, input[1], turn);
+                } else System.err.println("Wrong input.\n");
             } else {
-                System.out.println("Wrong input.\n");
+                System.err.println("Wrong input.\n");
             }
 
             printChessBoard(chessBoard.chessBoard);
@@ -65,15 +81,6 @@ public class GameManager {
 
     }
 
-    private static String changeTurn(String turn) {
-        if ("w".equals(turn)) {
-            turn = "b";
-        } else if ("b".equals(turn)){
-            turn = "w";
-        }
-        return turn;
-    }
-
     private static void printChessBoard(Piece[][] piecesPosition) {
         System.out.println("    A    B    C    D    E    F    G    H");
         int i = 8;
@@ -91,6 +98,61 @@ public class GameManager {
             System.out.println();
         }
         System.out.println();
+    }
+
+    private static String changeTurn(String turn) {
+        if ("w".equals(turn)) {
+            turn = "b";
+        } else if ("b".equals(turn)){
+            turn = "w";
+        }
+        return turn;
+    }
+
+    private void saveGame(String saveName) {
+        String savePath = SAVE_PATH.concat(saveName).concat(".ser");
+        realSaveGameToFile(savePath);
+        savedGamesPaths.add(savePath);
+        exportSavedGamesPaths(savedGamesPaths);
+        System.out.println("Gra zapisana.");
+    }
+
+    private void realSaveGameToFile(String path) {
+        try {
+            ObjectOutputStream save = new ObjectOutputStream(
+                    new FileOutputStream(path));
+            save.writeObject(chessBoard.chessBoard);
+            save.close();
+        } catch (IOException e) {
+            System.err.println("Saving game failed!");
+            e.printStackTrace();
+        }
+    }
+
+    private void exportSavedGamesPaths(Set<String> savedGamesPaths) {
+        File sgFile = new File(SAVED_GAMES_PATHS);
+        try (FileWriter fileWriter = new FileWriter(sgFile)) {
+            String pathsOfSavedGamesFiles = String.join(System.lineSeparator(), savedGamesPaths);
+            fileWriter.write(pathsOfSavedGamesFiles);
+            System.out.println("Plik zapisany.");
+        } catch (IOException e) {
+            System.err.println("Creating list of saved games to display failed.");
+            e.printStackTrace();
+        }
+    }
+
+    private void loadGameFromFile(String saveName) {
+        try {
+            ObjectInputStream load = new ObjectInputStream(
+                    new FileInputStream(SAVE_PATH.concat(saveName.concat(".ser"))));
+            chessBoard.chessBoard = (Piece[][]) load.readObject();
+            load.close();
+            System.out.println("Game successfully loaded!\n");
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Loading saved game failed!");
+            System.out.println("There is a problem with saved game file... File is corrupted or doesn't exists.");
+            System.out.println("Starting new game...\n");
+        }
     }
 
     private static void addAllPieces(ChessBoard chessBoard) {
