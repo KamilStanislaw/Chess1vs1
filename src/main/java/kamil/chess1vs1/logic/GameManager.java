@@ -17,6 +17,7 @@ public class GameManager {
     }
 
     void run(int choice, String saveName) {
+        addEmergencyPiecesForPromotion(chessBoard);
         if (choice == 1) {
             chessBoard.chessBoard = new Piece[8][8];
             addAllPieces(chessBoard);
@@ -34,6 +35,7 @@ public class GameManager {
         printChessBoard(chessBoard.chessBoard);
 
         String turn = "w";
+        int[] optionalCoordsToPromote;
         while (true) {
             if ("w".equals(turn)) {
                 System.out.println("Turn: w");
@@ -56,7 +58,35 @@ public class GameManager {
                 String[] input = coords.split(",\\s*");
                 String pieceNameInput = input[0];
                 if (input[1].matches("[a-hA-h][12345678]")){
-                    chessBoard.compareInputWithPieceAndMove(pieceNameInput, input[1], turn);
+                    optionalCoordsToPromote = chessBoard.compareInputWithPieceAndMove(pieceNameInput, input[1], turn);
+
+                    if (optionalCoordsToPromote != null) { //choose piece to replace with pawn
+                        System.out.println("Your Pawn has been promoted! Choose between " +
+                                "Queen, Rook, Bishop or Knight (Horse): ");
+                        String nameOfPromotedPiece = scanner.nextLine().toLowerCase();
+                        int eightRow = 0;
+                        int firstRow = 7;
+                        String[] symbols = {"wQ", "bQ", "wR", "bR", "wB", "bB", "wH", "bH"};
+                        switch (nameOfPromotedPiece) {
+                            case "queen" -> {
+                                promoteReplacePiece(chessBoard, optionalCoordsToPromote, eightRow, symbols[0]);
+                                promoteReplacePiece(chessBoard, optionalCoordsToPromote, firstRow, symbols[1]);
+                            }
+                            case "rook" -> {
+                                promoteReplacePiece(chessBoard, optionalCoordsToPromote, eightRow, symbols[2]);
+                                promoteReplacePiece(chessBoard, optionalCoordsToPromote, firstRow, symbols[3]);
+                            }
+                            case "bishop" -> {
+                                promoteReplacePiece(chessBoard, optionalCoordsToPromote, eightRow, symbols[4]);
+                                promoteReplacePiece(chessBoard, optionalCoordsToPromote, firstRow, symbols[5]);
+                            }
+                            case "knight", "horse" -> {
+                                promoteReplacePiece(chessBoard, optionalCoordsToPromote, eightRow, symbols[6]);
+                                promoteReplacePiece(chessBoard, optionalCoordsToPromote, firstRow, symbols[7]);
+                            }
+                        }
+                        printChessBoard(chessBoard.chessBoard);
+                    }
                 } else System.err.println("Wrong input.\n");
             } else {
                 System.err.println("Wrong input.\n");
@@ -78,6 +108,19 @@ public class GameManager {
             }
         }
 
+    }
+
+    public void promoteReplacePiece(ChessBoard chessBoard, int[] optionalCoordsToPromote, int row, String symbol) {
+        if (optionalCoordsToPromote[0] == row) {
+            for (Piece tempPiece : chessBoard.emergencyPiecesForPromotion) {
+                if (tempPiece.getName().startsWith(symbol)) {
+                    chessBoard.cleanFieldAtCoords(chessBoard.turnIndexIntoField(optionalCoordsToPromote));
+                    chessBoard.add(tempPiece, chessBoard.turnIndexIntoField(optionalCoordsToPromote));
+                    chessBoard.emergencyPiecesForPromotion.remove(tempPiece);
+                    break;
+                }
+            }
+        }
     }
 
     private static void printChessBoard(Piece[][] piecesPosition) {
@@ -231,5 +274,143 @@ public class GameManager {
         chessBoard.add(blackKing,"e8");
     }
 
+    public static void addEmergencyPiecesForPromotion(ChessBoard chessBoard) {
+
+        Queen whiteQueen2 = new Queen(Color.WHITE, "wQ2");
+        chessBoard.emergencyPiecesForPromotion.add(whiteQueen2);
+        Queen whiteQueen3 = new Queen(Color.WHITE, "wQ3");
+        chessBoard.emergencyPiecesForPromotion.add(whiteQueen3);
+        Queen whiteQueen4 = new Queen(Color.WHITE, "wQ4");
+        chessBoard.emergencyPiecesForPromotion.add(whiteQueen4);
+        Queen whiteQueen5 = new Queen(Color.WHITE, "wQ5");
+        chessBoard.emergencyPiecesForPromotion.add(whiteQueen5);
+        Queen whiteQueen6 = new Queen(Color.WHITE, "wQ6");
+        chessBoard.emergencyPiecesForPromotion.add(whiteQueen6);
+        Queen whiteQueen7 = new Queen(Color.WHITE, "wQ7");
+        chessBoard.emergencyPiecesForPromotion.add(whiteQueen7);
+        Queen whiteQueen8 = new Queen(Color.WHITE, "wQ8");
+        chessBoard.emergencyPiecesForPromotion.add(whiteQueen8);
+        Queen whiteQueen9 = new Queen(Color.WHITE, "wQ9");
+        chessBoard.emergencyPiecesForPromotion.add(whiteQueen9);
+
+        Queen blackQueen2 = new Queen(Color.BLACK, "bQ2");
+        chessBoard.emergencyPiecesForPromotion.add(blackQueen2);
+        Queen blackQueen3 = new Queen(Color.BLACK, "bQ3");
+        chessBoard.emergencyPiecesForPromotion.add(blackQueen3);
+        Queen blackQueen4 = new Queen(Color.BLACK, "bQ4");
+        chessBoard.emergencyPiecesForPromotion.add(blackQueen4);
+        Queen blackQueen5 = new Queen(Color.BLACK, "bQ5");
+        chessBoard.emergencyPiecesForPromotion.add(blackQueen5);
+        Queen blackQueen6 = new Queen(Color.BLACK, "bQ6");
+        chessBoard.emergencyPiecesForPromotion.add(blackQueen6);
+        Queen blackQueen7 = new Queen(Color.BLACK, "bQ7");
+        chessBoard.emergencyPiecesForPromotion.add(blackQueen7);
+        Queen blackQueen8 = new Queen(Color.BLACK, "bQ8");
+        chessBoard.emergencyPiecesForPromotion.add(blackQueen8);
+        Queen blackQueen9 = new Queen(Color.BLACK, "bQ9");
+        chessBoard.emergencyPiecesForPromotion.add(blackQueen9);
+
+        Rook whiteRook3 = new Rook(Color.WHITE, "wR3");
+        chessBoard.emergencyPiecesForPromotion.add(whiteRook3);
+        Rook whiteRook4 = new Rook(Color.WHITE, "wR4");
+        chessBoard.emergencyPiecesForPromotion.add(whiteRook4);
+        Rook whiteRook5 = new Rook(Color.WHITE, "wR5");
+        chessBoard.emergencyPiecesForPromotion.add(whiteRook5);
+        Rook whiteRook6 = new Rook(Color.WHITE, "wR6");
+        chessBoard.emergencyPiecesForPromotion.add(whiteRook6);
+        Rook whiteRook7 = new Rook(Color.WHITE, "wR7");
+        chessBoard.emergencyPiecesForPromotion.add(whiteRook7);
+        Rook whiteRook8 = new Rook(Color.WHITE, "wR8");
+        chessBoard.emergencyPiecesForPromotion.add(whiteRook8);
+        Rook whiteRook9 = new Rook(Color.WHITE, "wR9");
+        chessBoard.emergencyPiecesForPromotion.add(whiteRook9);
+        Rook whiteRook10 = new Rook(Color.WHITE, "wR0");
+        chessBoard.emergencyPiecesForPromotion.add(whiteRook10);
+
+        Rook blackRook3 = new Rook(Color.BLACK, "bR3");
+        chessBoard.emergencyPiecesForPromotion.add(blackRook3);
+        Rook blackRook4 = new Rook(Color.BLACK, "bR4");
+        chessBoard.emergencyPiecesForPromotion.add(blackRook4);
+        Rook blackRook5 = new Rook(Color.BLACK, "bR5");
+        chessBoard.emergencyPiecesForPromotion.add(blackRook5);
+        Rook blackRook6 = new Rook(Color.BLACK, "bR6");
+        chessBoard.emergencyPiecesForPromotion.add(blackRook6);
+        Rook blackRook7 = new Rook(Color.BLACK, "bR7");
+        chessBoard.emergencyPiecesForPromotion.add(blackRook7);
+        Rook blackRook8 = new Rook(Color.BLACK, "bR8");
+        chessBoard.emergencyPiecesForPromotion.add(blackRook8);
+        Rook blackRook9 = new Rook(Color.BLACK, "bR9");
+        chessBoard.emergencyPiecesForPromotion.add(blackRook9);
+        Rook blackRook10 = new Rook(Color.BLACK, "bR0");
+        chessBoard.emergencyPiecesForPromotion.add(blackRook10);
+
+        Bishop whiteBishop3 = new Bishop(Color.WHITE, "wB3");
+        chessBoard.emergencyPiecesForPromotion.add(whiteBishop3);
+        Bishop whiteBishop4 = new Bishop(Color.WHITE, "wB4");
+        chessBoard.emergencyPiecesForPromotion.add(whiteBishop4);
+        Bishop whiteBishop5 = new Bishop(Color.WHITE, "wB5");
+        chessBoard.emergencyPiecesForPromotion.add(whiteBishop5);
+        Bishop whiteBishop6 = new Bishop(Color.WHITE, "wB6");
+        chessBoard.emergencyPiecesForPromotion.add(whiteBishop6);
+        Bishop whiteBishop7 = new Bishop(Color.WHITE, "wB7");
+        chessBoard.emergencyPiecesForPromotion.add(whiteBishop7);
+        Bishop whiteBishop8 = new Bishop(Color.WHITE, "wB8");
+        chessBoard.emergencyPiecesForPromotion.add(whiteBishop8);
+        Bishop whiteBishop9 = new Bishop(Color.WHITE, "wB9");
+        chessBoard.emergencyPiecesForPromotion.add(whiteBishop9);
+        Bishop whiteBishop10 = new Bishop(Color.WHITE, "wB0");
+        chessBoard.emergencyPiecesForPromotion.add(whiteBishop10);
+
+        Bishop blackBishop3 = new Bishop(Color.BLACK, "bB3");
+        chessBoard.emergencyPiecesForPromotion.add(blackBishop3);
+        Bishop blackBishop4 = new Bishop(Color.BLACK, "bB4");
+        chessBoard.emergencyPiecesForPromotion.add(blackBishop4);
+        Bishop blackBishop5 = new Bishop(Color.BLACK, "bB5");
+        chessBoard.emergencyPiecesForPromotion.add(blackBishop5);
+        Bishop blackBishop6 = new Bishop(Color.BLACK, "bB6");
+        chessBoard.emergencyPiecesForPromotion.add(blackBishop6);
+        Bishop blackBishop7 = new Bishop(Color.BLACK, "bB7");
+        chessBoard.emergencyPiecesForPromotion.add(blackBishop7);
+        Bishop blackBishop8 = new Bishop(Color.BLACK, "bB8");
+        chessBoard.emergencyPiecesForPromotion.add(blackBishop8);
+        Bishop blackBishop9 = new Bishop(Color.BLACK, "bB9");
+        chessBoard.emergencyPiecesForPromotion.add(blackBishop9);
+        Bishop blackBishop10 = new Bishop(Color.BLACK, "bB0");
+        chessBoard.emergencyPiecesForPromotion.add(blackBishop10);
+
+        Knight whiteKnight3 = new Knight(Color.WHITE, "wH3");
+        chessBoard.emergencyPiecesForPromotion.add(whiteKnight3);
+        Knight whiteKnight4 = new Knight(Color.WHITE, "wH4");
+        chessBoard.emergencyPiecesForPromotion.add(whiteKnight4);
+        Knight whiteKnight5 = new Knight(Color.WHITE, "wH5");
+        chessBoard.emergencyPiecesForPromotion.add(whiteKnight5);
+        Knight whiteKnight6 = new Knight(Color.WHITE, "wH6");
+        chessBoard.emergencyPiecesForPromotion.add(whiteKnight6);
+        Knight whiteKnight7 = new Knight(Color.WHITE, "wH7");
+        chessBoard.emergencyPiecesForPromotion.add(whiteKnight7);
+        Knight whiteKnight8 = new Knight(Color.WHITE, "wH8");
+        chessBoard.emergencyPiecesForPromotion.add(whiteKnight8);
+        Knight whiteKnight9 = new Knight(Color.WHITE, "wH9");
+        chessBoard.emergencyPiecesForPromotion.add(whiteKnight9);
+        Knight whiteKnight10 = new Knight(Color.WHITE, "wH0");
+        chessBoard.emergencyPiecesForPromotion.add(whiteKnight10);
+
+        Knight blackKnight3 = new Knight(Color.BLACK, "bH3");
+        chessBoard.emergencyPiecesForPromotion.add(blackKnight3);
+        Knight blackKnight4 = new Knight(Color.BLACK, "bH4");
+        chessBoard.emergencyPiecesForPromotion.add(blackKnight4);
+        Knight blackKnight5 = new Knight(Color.BLACK, "bH5");
+        chessBoard.emergencyPiecesForPromotion.add(blackKnight5);
+        Knight blackKnight6 = new Knight(Color.BLACK, "bH6");
+        chessBoard.emergencyPiecesForPromotion.add(blackKnight6);
+        Knight blackKnight7 = new Knight(Color.BLACK, "bH7");
+        chessBoard.emergencyPiecesForPromotion.add(blackKnight7);
+        Knight blackKnight8 = new Knight(Color.BLACK, "bH8");
+        chessBoard.emergencyPiecesForPromotion.add(blackKnight8);
+        Knight blackKnight9 = new Knight(Color.BLACK, "bH9");
+        chessBoard.emergencyPiecesForPromotion.add(blackKnight9);
+        Knight blackKnight10 = new Knight(Color.BLACK, "bH0");
+        chessBoard.emergencyPiecesForPromotion.add(blackKnight10);
+    }
 
 }

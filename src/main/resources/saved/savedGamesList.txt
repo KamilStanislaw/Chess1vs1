@@ -1,2 +1,4 @@
 src/main/resources/saved/First Test Save.ser
 src/main/resources/saved/test 2.ser
+src/main/resources/saved/after promotion.ser
+src/main/resources/saved/BP promote.ser

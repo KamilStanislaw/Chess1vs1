@@ -4,6 +4,8 @@ import kamil.chess1vs1.logic.ChessBoard;
 import kamil.chess1vs1.pieces.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChessBoardTest {
@@ -1080,5 +1082,145 @@ class ChessBoardTest {
         Rook rookStayed = (Rook) board.getPieceAtCoords("a8");
         assertEquals(king, kingStayed);
         assertEquals(rook, rookStayed);
+    }
+
+    @Test
+    public void correctCoordsToPromoteWhite() {
+        ChessBoard board = new ChessBoard();
+        int[] emptyString = null;
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
+        board.add(whitePawn, "d7");
+        board.move(whitePawn, "d8");
+        int[] coordsToPromote = board.getCoordsToPromote(whitePawn, emptyString);
+        String field = board.turnIndexIntoField(coordsToPromote);
+        assertEquals("d8", field);
+    }
+
+    @Test
+    public void wrongCoordsToPromote1() {
+        ChessBoard board = new ChessBoard();
+        int[] emptyCoords = null;
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
+        board.add(blackPawn, "d7");
+        board.move(blackPawn, "d8");
+        assertNotEquals("d8", board.getCoordsToPromote(blackPawn, emptyCoords));
+        assertEquals(emptyCoords, board.getCoordsToPromote(blackPawn, emptyCoords));
+    }
+
+    @Test
+    public void correctCoordsToPromoteBlack() {
+        ChessBoard board = new ChessBoard();
+        int[] emptyCoords = null;
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
+        board.add(blackPawn, "d2");
+        board.move(blackPawn, "d1");
+        int[] coordsToPromote = board.getCoordsToPromote(blackPawn, emptyCoords);
+        String field = board.turnIndexIntoField(coordsToPromote);
+        assertEquals("d1", field);
+    }
+
+    @Test
+    public void wrongCoordsToPromote2() {
+        ChessBoard board = new ChessBoard();
+        int[] emptyCoords = null;
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
+        board.add(whitePawn, "d2");
+        board.move(whitePawn, "d1");
+        assertNotEquals("d1", board.getCoordsToPromote(whitePawn, emptyCoords));
+        assertEquals(emptyCoords, board.getCoordsToPromote(whitePawn, emptyCoords));
+    }
+
+    @Test
+    public void correctCoordsToPromoteWhiteAndDelete() {
+        ChessBoard board = new ChessBoard();
+        int[] emptyCoords = null;
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
+        board.add(whitePawn, "d7");
+        board.move(whitePawn, "d8");
+        int[] coordsToPromote = board.getCoordsToPromote(whitePawn, emptyCoords);
+        String field = board.turnIndexIntoField(coordsToPromote);
+        if ("d8".equals(field)) {
+            board.cleanFieldAtCoords("d8");
+        }
+        assertNull(board.getPieceAtCoords("d8"));
+    }
+
+    @Test
+    public void wrongCoordsToPromoteWhiteAndNotDelete() {
+        ChessBoard board = new ChessBoard();
+        int[] emptyCoords = null;
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
+        board.add(whitePawn, "d6");
+        board.move(whitePawn, "d7");
+        int[] fieldToPromote = board.turnFieldIntoIndex("d8");
+        if (Arrays.equals(fieldToPromote, board.getCoordsToPromote(whitePawn, emptyCoords))) {
+            board.cleanFieldAtCoords("d7");
+        }
+        assertNotNull(board.getPieceAtCoords("d7"));
+        assertEquals(whitePawn, board.getPieceAtCoords("d7"));
+    }
+
+    @Test
+    public void correctCoordsToPromoteBlackAndDelete() {
+        ChessBoard board = new ChessBoard();
+        int[] emptyCoords = null;
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
+        board.add(blackPawn, "d2");
+        board.move(blackPawn, "d1");
+        int[] coordsToPromote = board.getCoordsToPromote(blackPawn, emptyCoords);
+        String field = board.turnIndexIntoField(coordsToPromote);
+        if ("d1".equals(field)) {
+            board.cleanFieldAtCoords("d1");
+        }
+        assertNull(board.getPieceAtCoords("d1"));
+    }
+
+    @Test
+    public void wrongCoordsToPromoteBlackAndNotDelete() {
+        ChessBoard board = new ChessBoard();
+        int[] emptyCoords = null;
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
+        board.add(blackPawn, "d3");
+        board.move(blackPawn, "d2");
+        int[] fieldToPromote = board.turnFieldIntoIndex("d2");
+        if (Arrays.equals(fieldToPromote, board.getCoordsToPromote(blackPawn, emptyCoords))) {
+            board.cleanFieldAtCoords("d2");
+        }
+        assertNotNull(board.getPieceAtCoords("d2"));
+        assertEquals(blackPawn, board.getPieceAtCoords("d2"));
+    }
+
+    @Test
+    public void correctCoordsAndPromoteWhiteToQueen() {
+        ChessBoard board = new ChessBoard();
+        int[] emptyCoords = null;
+        Pawn whitePawn = new Pawn(Color.WHITE, "white");
+        Queen whiteQueen = new Queen(Color.WHITE, "wQ");
+        board.add(whitePawn, "d7");
+        board.move(whitePawn, "d8");
+        int[] coordsToPromote = board.getCoordsToPromote(whitePawn, emptyCoords);
+        String field = board.turnIndexIntoField(coordsToPromote);
+        if ("d8".equals(field)) {
+            board.cleanFieldAtCoords("d8");
+            board.add(whiteQueen, "d8");
+        }
+        assertEquals(whiteQueen, board.getPieceAtCoords("d8"));
+    }
+
+    @Test
+    public void correctCoordsAndPromoteBlackToRook() {
+        ChessBoard board = new ChessBoard();
+        int[] emptyCoords = null;
+        Pawn blackPawn = new Pawn(Color.BLACK, "black");
+        Rook blackRook = new Rook(Color.BLACK, "bR");
+        board.add(blackPawn, "d2");
+        board.move(blackPawn, "d1");
+        int[] coordsToPromote = board.getCoordsToPromote(blackPawn, emptyCoords);
+        String field = board.turnIndexIntoField(coordsToPromote);
+        if ("d1".equals(field)) {
+            board.cleanFieldAtCoords("d1");
+            board.add(blackRook, "d1");
+        }
+        assertEquals(blackRook, board.getPieceAtCoords("d1"));
     }
 }

@@ -2,9 +2,16 @@ package kamil.chess1vs1.logic;
 
 import kamil.chess1vs1.pieces.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChessBoard implements TurningCoordinates {
     public Piece[][] chessBoard = new Piece[8][8];
-    public void compareInputWithPieceAndMove(String pieceNameInput, String inputCoords, String turn) {
+
+    public List<Piece> emergencyPiecesForPromotion = new ArrayList<>();
+
+    public int[] compareInputWithPieceAndMove(String pieceNameInput, String inputCoords, String turn) {
+        int[] coordsForPromotion = null;
         for (Piece[] pieces : chessBoard) {
             for (Piece piece : pieces) {
                 if (piece !=null) {
@@ -15,10 +22,23 @@ public class ChessBoard implements TurningCoordinates {
                         } else if (getPieceAtCoords(inputCoords) == null){
                             move(piece, inputCoords);
                         }
+                        if (piece instanceof Pawn) { //if pawn is at enemy home - promote
+                            coordsForPromotion = getCoordsToPromote(piece, coordsForPromotion);
+                        }
                     }
                 }
             }
         }
+        return coordsForPromotion;
+    }
+
+    public int[] getCoordsToPromote(Piece piece, int[] coordsForPromotion) {
+        int[] field = piece.getField();
+        if ((piece.getColor().equals(Color.WHITE) && field[0] == 0) ||
+                (piece.getColor().equals(Color.BLACK) && field[0] == 7)) {
+                coordsForPromotion = (piece.getField());
+        }
+        return coordsForPromotion;
     }
 
     public void add(Piece figura, String field) {
